@@ -1,0 +1,21 @@
+<module>
+  <rawname>sms</rawname>
+  <name>SMS</name>
+  <publisher>Schmooze Com Inc</publisher>
+  <license>Commercial</license>
+  <licenselink>http://literature.schmoozecom.com/EUA/FreePBXCommercialModule-EndUserAgreement.txt</licenselink>
+  <repo>standard</repo>
+  <category>Connectivity</category>
+  <version>12.0.3</version>
+  <description>
+  </description>
+  <changelog>
+  </changelog>
+  <depends>
+    <engine>asterisk 11</engine>
+    <version>12.0.1beta23</version>
+  </depends>
+  <supported>
+    <version>12.0</version>
+  </supported>
+</module>
