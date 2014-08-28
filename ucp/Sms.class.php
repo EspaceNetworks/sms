@@ -40,6 +40,7 @@ class Sms extends Modules{
 		}
 		$messages = array();
 		//see if there are any new messages since the last checked time
+		$mdata['lastchecked'] = !empty($mdata['lastchecked']) ? $mdata['lastchecked'] : null;
 		$newmessages = $this->sms->getMessagesSinceTime($this->userID,$mdata['lastchecked']);
 		if(!empty($newmessages)) {
 			foreach($newmessages as $messageb) {
