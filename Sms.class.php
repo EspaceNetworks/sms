@@ -56,11 +56,11 @@ class Sms implements \BMO {
 	 * @param {array} $dids=array() Array of DIDs to add to said user
 	 */
 	public function addUserRouting($user,$dids=array()) {
-		$did = strlen($did) == 10 ? '1'.$did : $did;
 		$sql = "DELETE FROM sms_routing WHERE uid = ?";
 		$sth = $this->db->prepare($sql);
 		$sth->execute(array($user));
 		foreach($dids as $did) {
+			$did = strlen($did) == 10 ? '1'.$did : $did;
 			$sql = "INSERT INTO sms_routing (`did`, `uid`, `accepter`, `adaptor`) VALUES (?,?,?,?)";
 			$sth = $this->db->prepare($sql);
 			$sth->execute(array($did,$user,'UCP','Sipstation'));
