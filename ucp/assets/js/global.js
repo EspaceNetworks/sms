@@ -23,7 +23,7 @@ var SmsC = UCPMC.extend({
 				$.each(messages, function(index, v) {
 					if (!$(".message-box[data-id=\"" + windowid + "\"] .message[data-id=\"" + v.id + "\"]").length) {
 						var Notification = new Notify("New Message from " + v.from, {
-							body: v.body,
+							body: emojione.unifyUnicode(v.body),
 							icon: "modules/Sms/assets/images/comment.png"
 						});
 						UCP.addChat("Sms", windowid, v.recp, v.did, v.recp, v.cnam, v.id, v.body);

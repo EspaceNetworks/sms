@@ -11,6 +11,9 @@ class Sms implements \BMO {
 		}
 		$this->FreePBX = $freepbx;
 		$this->db = $freepbx->Database;
+		if(!class_exists("Emojione")) {
+			include(__DIR__."/includes/Emojione.class.php");
+		}
 	}
 
 	public function install() {

@@ -30,6 +30,13 @@ class Sms extends Modules{
 		$page = !empty($_REQUEST['page']) ? $_REQUEST['page'] : 1;
 		$displayvars['pagnation'] = $this->UCP->Template->generatePagnation($this->sms->getPages($this->userID,$displayvars['search'],$this->limit),$page,'?display=dashboard&mod=sms',5);
 		$displayvars['messages'] = $this->sms->getAllMessagesHistory($this->userID,$displayvars['search'],$displayvars['order'],$displayvars['orderby'],$page,$this->limit);
+		foreach($displayvars['messages'] as &$sender) {
+			foreach($sender as &$thread) {
+				foreach($thread as &$message) {
+					$message['body'] = \Emojione::toImage($message['body']);
+				}
+			}
+		}
 		$html = $this->load_view(__DIR__.'/views/history.php',$displayvars);
 		return $html;
 	}
@@ -106,7 +113,7 @@ class Sms extends Modules{
 				$final['messages'][] = array(
 					'id' => $m['id'],
 					'from' => in_array($m['from'],$this->dids) ? _('Me') : $m['from'],
-					'message' => trim($m['body']),
+					'message' => trim(\Emojione::toImage($m['body'])),
 					'date' => strtotime($m['tx_rx_datetime'])
 				);
 			}
@@ -126,7 +133,7 @@ class Sms extends Modules{
 				$final[] = array(
 					'id' => $m['id'],
 					'from' => in_array($m['from'],$this->dids) ? _('Me') : $m['from'],
-					'message' => $m['body'],
+					'message' => \Emojione::toImage($m['body']),
 					'date' => strtotime($m['tx_rx_datetime'])
 				);
 			}
