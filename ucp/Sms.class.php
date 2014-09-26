@@ -172,6 +172,22 @@ class Sms extends Modules{
 		return !empty($this->dids) ? array('icon' => 'fa-comment', 'title' => _("New SMS")) : array();
 	}
 
+	public function getNavItems() {
+		if(empty($this->dids)) {
+			return false;
+		}
+		$out = array();
+		$out[] = array(
+			"rawname" => "sms",
+			"badge" => false,
+			"icon" => "fa-comments-o",
+			"menu" => array(
+				"html" => '<li><a>'._("New SMS").'</a></li>'
+			)
+		);
+		return $out;
+	}
+
 	/**
 	 * The Handler for all ajax events releated to this class
 	 *

@@ -72,7 +72,7 @@ var SmsC = UCPMC.extend({
 			$("#" + id + "-messages").find(".sms-message-body").each(function() { $(this).scrollTop($(this)[0].scrollHeight); });
 		});
 		$("i.fa-trash-o").click(function() {
-			if (confirm("Are you Sure you wish to delete this chat history?")) {
+			if (confirm(_("Are you Sure you wish to delete this chat history?"))) {
 				$(this).parents(".sms-message").fadeOut("slow");
 			}
 		});
@@ -111,17 +111,24 @@ var SmsC = UCPMC.extend({
 			UCP.addChat("Sms", from + to, to, from, to);
 			UCP.closeDialog();
 		} else if (to.length > 11 || to.length < 10) {
-			alert("Invalid Number");
+			alert(_("Invalid Number"));
 		}
 	},
 	startChat: function(from, to) {
 		UCP.addChat("Sms", from + to, to, from, to);
 	},
 	sendMessage: function(windowId, from, to, message) {
+		$(".message-box[data-id='" + windowId + "'] textarea").prop("disabled", true);
 		$.post( "index.php?quietmode=1&module=sms&command=send", { from: from, to: to, message: message }, function( data ) {
 			if (data.status) {
 				UCP.addChatMessage(windowId, from, data.id, message, false);
+				$(".message-box[data-id='" + windowId + "'] textarea").val("");
+			} else {
+				//TODO: Error message about sending here!
+				//UCP.addChatMessage(windowId, _("System"), data.id, _("There was an error sending this message: "), false);
 			}
+			$(".message-box[data-id='" + windowId + "'] textarea").prop("disabled", false);
+			$(".message-box[data-id='" + windowId + "'] textarea").focus();
 		});
 	}
 }),
@@ -129,21 +136,26 @@ Sms = new SmsC();
 
 //Logged In
 $(document).bind("logIn", function( event ) {
-	$("#presence-menu2 .options .actions div[data-module=\"Sms\"]").on("click", function() {
+	$("#sms-menu a").on("click", function() {
 		$.post( "index.php?quietmode=1&module=sms&command=dids", {}, function( data ) {
 			var sfrom = "";
 			$.each(data.dids, function(i, v) {
 				sfrom = sfrom + "<option>" + v + "</option>";
 			});
-			UCP.showDialog("Send Message", "<label for=\"SMSfrom\">From:</label> <select id=\"SMSfrom\" class=\"form-control\">" + sfrom + "</select><label for=\"SMSto\">To:</label><input class=\"form-control\" id=\"SMSto\" type='text'><button class=\"btn btn-default\" id=\"initiateSMS\" style=\"margin-left: 72px;\">Initiate</button>",200);
-			$("#initiateSMS").click(function() {
-				Sms.initiateChat();
-			});
-			$("#SMSto").keypress(function(event) {
-				if (event.keyCode == 13) {
-					Sms.initiateChat();
-				}
-			});
+			UCP.showDialog("Send Message",
+				"<label for=\"SMSfrom\">From:</label> <select id=\"SMSfrom\" class=\"form-control\">" + sfrom + "</select><label for=\"SMSto\">To:</label><input class=\"form-control\" id=\"SMSto\" type='text'><button class=\"btn btn-default\" id=\"initiateSMS\" style=\"margin-left: 72px;\">Initiate</button>",
+				200,
+				250,
+				function() {
+					$("#initiateSMS").click(function() {
+						Sms.initiateChat();
+					});
+					$("#SMSto").keypress(function(event) {
+						if (event.keyCode == 13) {
+							Sms.initiateChat();
+						}
+					});
+				});
 		});
 	});
 });
@@ -159,13 +171,14 @@ $(document).on("chatWindowAdded", function(event, windowId, module, object) {
 			if (event.keyCode == 13) {
 				var message = $(this).val();
 				Sms.sendMessage(windowId, from, to, message);
-				$(this).val("");
 			}
 		});
 		object.find(".chat").scroll(function() {
 			if ($(this)[0].scrollTop === 0) {
 				var id = $(".chat .message:lt(1)").data("id");
+				$(".message-box[data-id=\"" + windowId + "\"] .chat .history").prepend('<div class="message status">Loading...</div>');
 				$.post( "index.php?quietmode=1&module=sms&command=history", { id: id, from: from, to: to }, function( data ) {
+					$(".message-box[data-id=\"" + windowId + "\"] .chat .history .status").remove();
 					var html = "";
 					$.each(data.messages, function(i, v) {
 						html = html + "<div class=\"message\" data-id=\"" + v.id + "\"><strong>" + v.from + ":</strong>" + v.message + "</div>";
