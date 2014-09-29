@@ -176,13 +176,24 @@ class Sms extends Modules{
 		if(empty($this->dids)) {
 			return false;
 		}
+		$dlist = "";
+		$count = 1;
+		foreach($this->sms->getAllMessagesHistory($this->userID) as $did) {
+			foreach(array_keys($did) as $d) {
+				if($count > 5) {
+					break(2);
+				}
+				$dlist .= "<li><a class='did' data-did='" . $d . "'>" . $d . "</a></li>";
+				$count++;
+			}
+		}
 		$out = array();
 		$out[] = array(
 			"rawname" => "sms",
 			"badge" => false,
 			"icon" => "fa-comments-o",
 			"menu" => array(
-				"html" => '<li><a>'._("New SMS").'</a></li>'
+				"html" => '<li><a class="new">'._("New SMS").'</a></li><li><hr></li>' . $dlist
 			)
 		);
 		return $out;
