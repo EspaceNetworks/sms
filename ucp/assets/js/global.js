@@ -69,11 +69,18 @@ var SmsC = UCPMC.extend({
 		$("i.fa-eye").click(function() {
 			var id = $(this).data("id");
 			$("#" + id + "-messages").toggle();
-			$("#" + id + "-messages").find(".sms-message-body").each(function() { $(this).scrollTop($(this)[0].scrollHeight); });
+			$("#" + id + "-messages").find(".sms-message-body").each(function() { $(this).scrollTop(0); });
 		});
 		$("i.fa-trash-o").click(function() {
 			if (confirm(_("Are you Sure you wish to delete this chat history?"))) {
-				$(this).parents(".sms-message").fadeOut("slow");
+				var thread = $(this).parents(".sms-message");
+				$.post( "index.php?quietmode=1&module=sms&command=delete", { from: thread.data("from"), to: thread.data("to") }, function( data ) {
+					if (data.status) {
+						thread.fadeOut("slow");
+					} else {
+
+					}
+				});
 			}
 		});
 		$("#search-text").keypress(function(e) {

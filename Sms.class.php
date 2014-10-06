@@ -243,7 +243,7 @@ class Sms implements \BMO {
 		$dids = $this->getDIDs($uid);
 		$grouped = array();
 		foreach($dids as $did) {
-			$conversations = $this->getConversations($did);
+			$conversations = $this->getConversations($uid, $did);
 			foreach($conversations as $convo) {
 				if(in_array($convo['from'],$dids)) {
 					$mdid = $convo['from'];
@@ -318,12 +318,23 @@ class Sms implements \BMO {
 	 * Get All Conversations for said DID
 	 * @param {int} $did The DID
 	 */
-	public function getConversations($did) {
-		$sql = "SELECT DISTINCT `from`, `to` FROM `sms_messages` WHERE (`from` = ? OR `to` = ?) ORDER BY UNIX_TIMESTAMP(tx_rx_datetime)";
+	public function getConversations($uid, $did) {
+		$sql = "SELECT DISTINCT a.`from`, a.`to` FROM `sms_messages` a, sms_routing b WHERE (a.`from` = :did OR a.`to` = :did) AND (b.did = :did OR b.did = :did) AND b.uid = :uid ORDER BY UNIX_TIMESTAMP(tx_rx_datetime);";
 		$sth = $this->db->prepare($sql);
-		$sth->execute(array($did,$did));
+		$sth->execute(array(":did" => $did, ":uid" => $uid));
 		$conversations = $sth->fetchAll(\PDO::FETCH_ASSOC);
 		return $conversations;
+	}
+
+	public function deleteConversations($uid, $did1, $did2) {
+		try {
+			$sql = "DELETE a FROM `sms_messages` a, `sms_routing` b WHERE ((a.`from` = :did1 OR a.`to` = :did1) OR (a.`from` = :did2 OR a.`to` = :did2)) AND (b.did = :did1 OR b.did = :did2) AND b.uid = :uid";
+			$sth = $this->db->prepare($sql);
+			$sth->execute(array(":did1" => $did1, ":did2" => $did2, ":uid" => $uid));
+			return true;
+		} catch(\Exception $e) {
+			return false;
+		}
 	}
 
 	/**

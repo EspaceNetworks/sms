@@ -10,7 +10,7 @@
 			<div class="input-group">
 				<input type="text" class="form-control" id="search-text" placeholder="<?php echo _('Search')?>" value="<?php echo $search?>">
 				<span class="input-group-btn">
-					<button class="btn btn-default" type="button" id="search-btn">Go!</button>
+					<button class="btn btn-default" type="button" id="search-btn"><?php echo _("Go")?>!</button>
 				</span>
 			</div>
 		</div>
@@ -30,8 +30,8 @@
 			<?php if(!empty($messages)) {?>
 				<?php foreach($messages as $from => $conversation){?>
 					<?php foreach($conversation as $to => $messages) { ?>
-						<?php $c = count($messages); $last = $messages[$c-1]; $prev = 0;?>
-						<tr class="sms-message">
+						<?php $c = count($messages); $last = $messages[0]; $prev = 0;?>
+						<tr class="sms-message" data-from="<?php echo $from?>" data-to="<?php echo $to?>">
 							<td class=""></td>
 							<td class=""><?php echo $last['tx_rx_datetime']?></td>
 							<td class=""><?php echo $from?></td>

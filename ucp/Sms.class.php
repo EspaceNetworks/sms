@@ -160,6 +160,7 @@ class Sms extends Modules{
 			case 'read':
 			case 'send':
 			case 'dids':
+			case 'delete':
 				return true;
 			break;
 			default:
@@ -209,6 +210,10 @@ class Sms extends Modules{
 	function ajaxHandler() {
 		$return = array("status" => false, "message" => "");
 		switch($_REQUEST['command']) {
+			case 'delete':
+				$this->sms->deleteConversations($this->userID, $_REQUEST['from'], $_REQUEST['to']);
+				$return['status'] = true;
+			break;
 			case 'history':
 				$messages = $this->getOldMessages($_POST['id'],$_POST['from'],$_POST['to']);
 				$return['status'] = true;
