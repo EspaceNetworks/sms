@@ -3,6 +3,7 @@ var SmsC = UCPMC.extend({
 		this.packery = false;
 		this.doit = null;
 		this.lastchecked = Math.round(new Date().getTime() / 1000);
+		this.dids = [];
 	},
 	prepoll: function(data) {
 		var messageBoxes = { messageWindows: {}, lastchecked: this.lastchecked };
@@ -144,49 +145,47 @@ Sms = new SmsC();
 //Logged In
 $(document).bind("logIn", function( event ) {
 	$("#sms-menu a.new").on("click", function() {
-		$.post( "index.php?quietmode=1&module=sms&command=dids", {}, function( data ) {
-			var sfrom = "";
-			$.each(data.dids, function(i, v) {
-				sfrom = sfrom + "<option>" + v + "</option>";
-			});
-			UCP.showDialog("Send Message",
-				"<label for=\"SMSfrom\">From:</label> <select id=\"SMSfrom\" class=\"form-control\">" + sfrom + "</select><label for=\"SMSto\">To:</label><input class=\"form-control\" id=\"SMSto\" type='text'><button class=\"btn btn-default\" id=\"initiateSMS\" style=\"margin-left: 72px;\">Initiate</button>",
-				200,
-				250,
-				function() {
-					$("#initiateSMS").click(function() {
-						Sms.initiateChat();
-					});
-					$("#SMSto").keypress(function(event) {
-						if (event.keyCode == 13) {
-							Sms.initiateChat();
-						}
-					});
-				});
+		var sfrom = "";
+		$.each(Sms.dids, function(i, v) {
+			sfrom = sfrom + "<option>" + v + "</option>";
 		});
+		UCP.showDialog(_("Send Message"),
+			"<label for=\"SMSfrom\">From:</label> <select id=\"SMSfrom\" class=\"form-control\">" + sfrom + "</select><label for=\"SMSto\">To:</label><input class=\"form-control\" id=\"SMSto\" type='text'><button class=\"btn btn-default\" id=\"initiateSMS\" style=\"margin-left: 72px;\">Initiate</button>",
+			200,
+			250,
+			function() {
+				$("#initiateSMS").click(function() {
+					Sms.initiateChat();
+				});
+				$("#SMSto").keypress(function(event) {
+					if (event.keyCode == 13) {
+						Sms.initiateChat();
+					}
+				});
+			}
+		);
 	});
 	$("#sms-menu a.did").on("click", function() {
-		var tdid = $(this).data("did");
-		$.post( "index.php?quietmode=1&module=sms&command=dids", {}, function( data ) {
-			var sfrom = "";
-			$.each(data.dids, function(i, v) {
-				sfrom = sfrom + "<option>" + v + "</option>";
-			});
-			UCP.showDialog("Send Message",
-				"<label for=\"SMSfrom\">From:</label> <select id=\"SMSfrom\" class=\"form-control\">" + sfrom + "</select><label for=\"SMSto\">To:</label><input class=\"form-control\" id=\"SMSto\" type='text' value='" + tdid + "'><button class=\"btn btn-default\" id=\"initiateSMS\" style=\"margin-left: 72px;\">Initiate</button>",
-				200,
-				250,
-				function() {
-					$("#initiateSMS").click(function() {
-						Sms.initiateChat();
-					});
-					$("#SMSto").keypress(function(event) {
-						if (event.keyCode == 13) {
-							Sms.initiateChat();
-						}
-					});
-				});
+		var tdid = $(this).data("did"),
+				sfrom = "";
+		$.each(Sms.dids, function(i, v) {
+			sfrom = sfrom + "<option>" + v + "</option>";
 		});
+		UCP.showDialog(_("Send Message"),
+			"<label for=\"SMSfrom\">From:</label> <select id=\"SMSfrom\" class=\"form-control\">" + sfrom + "</select><label for=\"SMSto\">To:</label><input class=\"form-control\" id=\"SMSto\" type='text' value='" + tdid + "'><button class=\"btn btn-default\" id=\"initiateSMS\" style=\"margin-left: 72px;\">Initiate</button>",
+			200,
+			250,
+			function() {
+				$("#initiateSMS").click(function() {
+					Sms.initiateChat();
+				});
+				$("#SMSto").keypress(function(event) {
+					if (event.keyCode == 13) {
+						Sms.initiateChat();
+					}
+				});
+			}
+		);
 	});
 });
 
@@ -217,5 +216,11 @@ $(document).on("chatWindowAdded", function(event, windowId, module, object) {
 				});
 			}
 		});
+	}
+});
+
+$(document).bind("staticSettingsFinished", function( event ) {
+	if ((typeof Sms.staticsettings !== "undefined") && Sms.staticsettings.enabled) {
+		Sms.dids = Sms.staticsettings.dids;
 	}
 });

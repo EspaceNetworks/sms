@@ -272,4 +272,18 @@ class Sms extends Modules{
 		);
 		return $menu;
 	}
+
+	/**
+	* Send settings to UCP upon initalization
+	*/
+	public function getStaticSettings() {
+		if(!empty($this->dids)) {
+			return array(
+				'enabled' => true,
+				'dids' => $this->dids
+			);
+		} else {
+			return array('enabled' => false);
+		}
+	}
 }
