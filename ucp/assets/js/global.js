@@ -4,9 +4,11 @@ var SmsC = UCPMC.extend({
 		this.doit = null;
 		this.lastchecked = Math.round(new Date().getTime() / 1000);
 		this.dids = [];
+		this.icon = "fa fa-comments-o";
 	},
 	prepoll: function(data) {
-		var messageBoxes = { messageWindows: {}, lastchecked: this.lastchecked };
+		var Sms = this,
+				messageBoxes = { messageWindows: {}, lastchecked: this.lastchecked };
 		$(".message-box[data-module=\"Sms\"]").each(function(i, v) {
 			var windowid = $(this).data("id"),
 					from = $(this).data("from"),
@@ -18,16 +20,18 @@ var SmsC = UCPMC.extend({
 		return messageBoxes;
 	},
 	poll: function(data) {
-		var delivered = [];
+		var Sms = this,
+				delivered = [];
 		if (data.status) {
 			$.each(data.messages, function(windowid, messages) {
 				$.each(messages, function(index, v) {
 					if (!$(".message-box[data-id=\"" + windowid + "\"] .message[data-id=\"" + v.id + "\"]").length) {
 						var Notification = new Notify(sprintf(_("New Message from %s"), v.from), {
 							body: emojione.unifyUnicode(v.body),
-							icon: "modules/Sms/assets/images/comment.png"
+							icon: "modules/Sms/assets/images/comment.png",
+							timeout: 3
 						});
-						UCP.addChat("Sms", windowid, v.recp, v.did, v.recp, v.cnam, v.id, v.body);
+						UCP.addChat("Sms", windowid, Sms.icon, v.did, v.recp, v.cnam, v.id, v.body);
 						delivered.push(v.id);
 						if (UCP.notify) {
 							Notification.show();
@@ -41,6 +45,7 @@ var SmsC = UCPMC.extend({
 		}
 	},
 	display: function(event) {
+		var Sms = this;
 		$(document).on("click", "[vm-pjax] a, a[vm-pjax]", function(event) {
 			event.preventDefault(); //stop browser event
 			var container = $("#dashboard-content");
@@ -100,6 +105,7 @@ var SmsC = UCPMC.extend({
 		}
 	},
 	search: function(text) {
+		var Sms = this;
 		if (text !== "") {
 			$.pjax({ url: "?display=dashboard&mod=sms&search=" + encodeURIComponent(text), container: "#dashboard-content" });
 		} else {
@@ -107,25 +113,29 @@ var SmsC = UCPMC.extend({
 		}
 	},
 	hide: function(event) {
+		var Sms = this;
 		$(document).off("click", "[vm-pjax] a, a[vm-pjax]");
 	},
 	resize: function() {
 
 	},
 	initiateChat: function() {
+		var Sms = this;
 		var to = $("#SMSto").val(), from = $("#SMSfrom").val();
 		if (to !== "" && to.length <= 11 && to.length >= 10) {
 			to = (to.length === 10) ? "1" + to : to;
-			UCP.addChat("Sms", from + to, to, from, to);
+			UCP.addChat("Sms", from + to, Sms.icon, from, to);
 			UCP.closeDialog();
 		} else if (to.length > 11 || to.length < 10) {
 			alert(_("Invalid Number"));
 		}
 	},
 	startChat: function(from, to) {
-		UCP.addChat("Sms", from + to, to, from, to);
+		var Sms = this;
+		UCP.addChat("Sms", from + to, Sms.icon, from, to);
 	},
 	sendMessage: function(windowId, from, to, message) {
+		var Sms = this;
 		$(".message-box[data-id='" + windowId + "'] textarea").prop("disabled", true);
 		$.post( "index.php?quietmode=1&module=sms&command=send", { from: from, to: to, message: message }, function( data ) {
 			if (data.status) {

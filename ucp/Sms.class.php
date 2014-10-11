@@ -169,10 +169,6 @@ class Sms extends Modules{
 		}
 	}
 
-	function getPresenceAction() {
-		return !empty($this->dids) ? array('icon' => 'fa-comment', 'title' => _("New SMS")) : array();
-	}
-
 	public function getNavItems() {
 		if(empty($this->dids)) {
 			return false;
