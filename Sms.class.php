@@ -452,9 +452,13 @@ class Sms implements \BMO {
 	public function replaceDIDwithDisplay($id, $did) {
 		if($this->FreePBX->Modules->checkStatus("contactmanager")) {
 			$did = strlen($did) == 11 && $did[0] == 1 ? substr($did, 1) : $did;
-			$user = $this->FreePBX->Contactmanager->lookupByUserID($id, $did);
-			if(!empty($user)) {
-				return $user['displayname'];
+			try {
+				$user = $this->FreePBX->Contactmanager->lookupByUserID($id, $did);
+				if(!empty($user)) {
+					return $user['displayname'];
+				}
+			} catch(\Exception $e) {
+				return $did;
 			}
 		}
 		return $did;
