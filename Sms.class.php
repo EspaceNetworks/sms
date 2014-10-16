@@ -448,4 +448,15 @@ class Sms implements \BMO {
 		$adaptors = $sth->fetchAll(\PDO::FETCH_ASSOC);
 		return $adaptors;
 	}
+
+	public function replaceDIDwithDisplay($id, $did) {
+		if($this->FreePBX->Modules->checkStatus("contactmanager")) {
+			$did = strlen($did) == 11 && $did[0] == 1 ? substr($did, 1) : $did;
+			$user = $this->FreePBX->Contactmanager->lookupByUserID($id, $did);
+			if(!empty($user)) {
+				return $user['displayname'];
+			}
+		}
+		return $did;
+	}
 }

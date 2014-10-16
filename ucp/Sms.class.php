@@ -112,7 +112,7 @@ class Sms extends Modules{
 			foreach($messages as $m) {
 				$final['messages'][] = array(
 					'id' => $m['id'],
-					'from' => in_array($m['from'],$this->dids) ? _('Me') : $m['from'],
+					'from' => in_array($m['from'],$this->dids) ? _('Me') : $this->replaceDIDwithDisplay($m['from']),
 					'message' => trim(\Emojione::toImage($m['body'])),
 					'date' => strtotime($m['tx_rx_datetime'])
 				);
@@ -132,7 +132,7 @@ class Sms extends Modules{
 			foreach($messages as $m) {
 				$final[] = array(
 					'id' => $m['id'],
-					'from' => in_array($m['from'],$this->dids) ? _('Me') : $m['from'],
+					'from' => in_array($m['from'],$this->dids) ? _('Me') : $this->replaceDIDwithDisplay($m['from']),
 					'message' => \Emojione::toImage($m['body']),
 					'date' => strtotime($m['tx_rx_datetime'])
 				);
@@ -175,12 +175,12 @@ class Sms extends Modules{
 		}
 		$dlist = "";
 		$count = 1;
-		foreach($this->sms->getAllMessagesHistory($this->userID) as $did) {
+		foreach(array_unique($this->sms->getAllMessagesHistory($this->userID)) as $did) {
 			foreach(array_keys($did) as $d) {
 				if($count > 5) {
 					break(2);
 				}
-				$dlist .= "<li><a class='did' data-did='" . $d . "'>" . $d . "</a></li>";
+				$dlist .= "<li><a class='did' data-did='" . $d . "'>" . $this->replaceDIDwithDisplay($d) . "</a></li>";
 				$count++;
 			}
 		}
@@ -281,5 +281,9 @@ class Sms extends Modules{
 		} else {
 			return array('enabled' => false);
 		}
+	}
+
+	public function replaceDIDwithDisplay($did) {
+		return $this->UCP->FreePBX->Sms->replaceDIDwithDisplay($this->userID,$did);
 	}
 }

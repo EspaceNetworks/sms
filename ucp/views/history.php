@@ -34,8 +34,8 @@
 						<tr class="sms-message" data-from="<?php echo $from?>" data-to="<?php echo $to?>">
 							<td class=""></td>
 							<td class=""><?php echo $last['tx_rx_datetime']?></td>
-							<td class=""><?php echo $from?></td>
-							<td class=""><a onclick="Sms.startChat('<?php echo $from?>','<?php echo $to?>')"><?php echo $to ?></a></td>
+							<td class=""><?php echo \UCP\UCP::create()->Modules->Sms->replaceDIDwithDisplay($from)?></td>
+							<td class=""><a onclick="UCP.modules.Sms.startChat('<?php echo $from?>','<?php echo $to?>')"><?php echo \UCP\UCP::create()->Modules->Sms->replaceDIDwithDisplay($to) ?></a></td>
 							<td class="actions"><a><i class="fa fa-eye" data-id="<?php echo $from?><?php echo $to?>"></i></a><a><i class="fa fa-trash-o"></i></a></td>
 						</tr>
 						<tr class="sms-message-body-container" id="<?php echo $from?><?php echo $to?>-messages">
@@ -47,7 +47,7 @@
 											<div class="full-date"><?php echo date('m/d/Y',$message['utime'])?></div>
 											<hr>
 										<?php } ?>
-										<span class="date">[<?php echo date('H:i',$message['utime'])?>]</span> <span class="name"><?php echo ($from == $message['from']) ? _('Me') : $message['from']?></span>: <?php echo $message['body']?><br/>
+										<span class="date">[<?php echo date('H:i',$message['utime'])?>]</span> <span class="name"><?php echo ($from == $message['from']) ? _('Me') : \UCP\UCP::create()->Modules->Sms->replaceDIDwithDisplay($message['from'])?></span>: <?php echo $message['body']?><br/>
 										<?php $prev = date('j',$message['utime']);?>
 									<?php } ?>
 								</div>

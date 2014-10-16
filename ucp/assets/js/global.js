@@ -89,6 +89,16 @@ var SmsC = UCPMC.extend({
 			}
 		});
 	},
+	replaceContact: function(contact) {
+		if (UCP.validMethod("Contactmanager", "lookup")) {
+			contact = contact.length == 11 ? contact.substring(1) : contact;
+			var entry = UCP.Modules.Contactmanager.lookup(contact);
+			if (entry !== null && entry !== false) {
+				return entry.displayname;
+			}
+		}
+		return contact;
+	},
 	prepoll: function(data) {
 		var Sms = this,
 				messageBoxes = { messageWindows: {}, lastchecked: this.lastchecked };
@@ -109,12 +119,12 @@ var SmsC = UCPMC.extend({
 			$.each(data.messages, function(windowid, messages) {
 				$.each(messages, function(index, v) {
 					if (!$(".message-box[data-id=\"" + windowid + "\"] .message[data-id=\"" + v.id + "\"]").length) {
-						var Notification = new Notify(sprintf(_("New Message from %s"), v.from), {
+						var Notification = new Notify(sprintf(_("New Message from %s"), Sms.replaceContact(v.from)), {
 							body: emojione.unifyUnicode(v.body),
 							icon: "modules/Sms/assets/images/comment.png",
 							timeout: 3
 						});
-						UCP.addChat("Sms", windowid, Sms.icon, v.did, v.recp, v.cnam, v.id, v.body);
+						UCP.addChat("Sms", windowid, Sms.icon, v.did, v.recp, Sms.replaceContact(v.cnam), v.id, v.body);
 						delivered.push(v.id);
 						if (UCP.notify) {
 							Notification.show();
