@@ -90,9 +90,14 @@ var SmsC = UCPMC.extend({
 		});
 	},
 	replaceContact: function(contact) {
+		var entry = null;
 		if (UCP.validMethod("Contactmanager", "lookup")) {
-			contact = contact.length == 11 ? contact.substring(1) : contact;
-			var entry = UCP.Modules.Contactmanager.lookup(contact, /\D/g);
+			scontact = contact.length == 11 ? contact.substring(1) : contact;
+			entry = UCP.Modules.Contactmanager.lookup(scontact, /\D/g);
+			if (entry !== null && entry !== false) {
+				return entry.displayname;
+			}
+			entry = UCP.Modules.Contactmanager.lookup(contact, /\D/g);
 			if (entry !== null && entry !== false) {
 				return entry.displayname;
 			}
