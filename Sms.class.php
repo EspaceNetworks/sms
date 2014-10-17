@@ -453,7 +453,7 @@ class Sms implements \BMO {
 		if($this->FreePBX->Modules->checkStatus("contactmanager")) {
 			$did = strlen($did) == 11 && $did[0] == 1 ? substr($did, 1) : $did;
 			try {
-				$user = $this->FreePBX->Contactmanager->lookupByUserID($id, $did);
+				$user = $this->FreePBX->Contactmanager->lookupByUserID($id, $did, '/\D/');
 				if(!empty($user)) {
 					return $user['displayname'];
 				}

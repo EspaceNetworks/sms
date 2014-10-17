@@ -92,7 +92,7 @@ var SmsC = UCPMC.extend({
 	replaceContact: function(contact) {
 		if (UCP.validMethod("Contactmanager", "lookup")) {
 			contact = contact.length == 11 ? contact.substring(1) : contact;
-			var entry = UCP.Modules.Contactmanager.lookup(contact);
+			var entry = UCP.Modules.Contactmanager.lookup(contact, /\D/g);
 			if (entry !== null && entry !== false) {
 				return entry.displayname;
 			}
