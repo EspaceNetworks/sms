@@ -35,7 +35,7 @@
 							<td class=""></td>
 							<td class=""><?php echo $last['tx_rx_datetime']?></td>
 							<td class=""><?php echo \UCP\UCP::create()->Modules->Sms->replaceDIDwithDisplay($from)?></td>
-							<td class=""><a onclick="UCP.modules.Sms.startChat('<?php echo $from?>','<?php echo $to?>')"><?php echo \UCP\UCP::create()->Modules->Sms->replaceDIDwithDisplay($to) ?></a></td>
+							<td class=""><a onclick="UCP.Modules.Sms.startChat('<?php echo $from?>','<?php echo $to?>')"><?php echo \UCP\UCP::create()->Modules->Sms->replaceDIDwithDisplay($to) ?></a></td>
 							<td class="actions"><a><i class="fa fa-eye" data-id="<?php echo $from?><?php echo $to?>"></i></a><a><i class="fa fa-trash-o"></i></a></td>
 						</tr>
 						<tr class="sms-message-body-container" id="<?php echo $from?><?php echo $to?>-messages">
