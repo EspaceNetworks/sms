@@ -465,7 +465,6 @@ class Sms implements \BMO {
 				return $did;
 			}
 		}
-
 		return $did;
 	}
 }

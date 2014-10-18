@@ -14,10 +14,11 @@ var SmsC = UCPMC.extend({
 					sfrom = sfrom + "<option>" + v + "</option>";
 				});
 				UCP.showDialog(_("Send Message"),
-					"<label for=\"SMSfrom\">From:</label> <select id=\"SMSfrom\" class=\"form-control\">" + sfrom + "</select><label for=\"SMSto\">To:</label><input class=\"form-control\" id=\"SMSto\" type='text'><button class=\"btn btn-default\" id=\"initiateSMS\" style=\"margin-left: 72px;\">Initiate</button>",
+					"<label for=\"SMSfrom\">From:</label> <select id=\"SMSfrom\" class=\"form-control\">" + sfrom + "</select><label for=\"SMSto\">To:</label><select class=\"form-control Tokenize Fill\" id=\"SMSto\" multiple>" + Sms.contactOptions() + "</select><button class=\"btn btn-default\" id=\"initiateSMS\" style=\"margin-left: 72px;\">Initiate</button>",
 					200,
 					250,
 					function() {
+						$("#SMSto").tokenize({ maxElements: 1 });
 						$("#initiateSMS").click(function() {
 							Sms.initiateChat();
 						});
@@ -88,6 +89,25 @@ var SmsC = UCPMC.extend({
 				Sms.dids = Sms.staticsettings.dids;
 			}
 		});
+	},
+	contactOptions: function() {
+		if (!UCP.validMethod("Contactmanager", "lookup")) {
+			return "";
+		}
+		var html = "", item = null, key, entry, contact;
+		for (i = 0; i < UCP.Modules.Contactmanager.contacts.length; i++) {
+			contact = UCP.Modules.Contactmanager.contacts[i];
+			item = UCP.Modules.Contactmanager.contacts[i].numbers;
+			for (key in item) {
+				entry = UCP.Modules.Contactmanager.contacts[i].numbers[key];
+				if (entry !== null) {
+					if (entry.trim() !== "" && entry.displayname !== "") {
+						html = html + "<option value='" + entry + "' data-type='" + contact.type + "'>" + contact.displayname + " (" + key + ")</option>";
+					}
+				}
+			}
+		}
+		return html;
 	},
 	replaceContact: function(contact) {
 		var entry = null;
@@ -218,13 +238,15 @@ var SmsC = UCPMC.extend({
 
 	},
 	initiateChat: function() {
-		var Sms = this;
-		var to = $("#SMSto").val(), from = $("#SMSfrom").val();
-		if (to !== "" && to.length <= 11 && to.length >= 10) {
+		var Sms = this,
+				to = ($("#SMSto").val() !== null) ? $("#SMSto").val()[0] : "",
+				from = $("#SMSfrom").val(),
+			pattern = new RegExp(/^\d*$/);
+		if (to !== "" && to.length <= 11 && to.length >= 10 && pattern.test(to)) {
 			to = (to.length === 10) ? "1" + to : to;
 			UCP.addChat("Sms", from + to, Sms.icon, from, to);
 			UCP.closeDialog();
-		} else if (to.length > 11 || to.length < 10) {
+		} else {
 			alert(_("Invalid Number"));
 		}
 	},
