@@ -112,7 +112,7 @@ var SmsC = UCPMC.extend({
 			for (key in item) {
 				entry = UCP.Modules.Contactmanager.contacts[i].numbers[key];
 				if (entry !== null) {
-					if (entry.trim() !== "" && entry.displayname !== "" && (skip !== null && skip != i)) {
+					if (entry.trim() !== "" && entry.displayname !== "" && (skip === null || (skip !== null && skip != i))) {
 						html = html + "<option value='" + entry + "' data-type='" + contact.type + "'>" + contact.displayname + " (" + key + ")</option>";
 					}
 				}
