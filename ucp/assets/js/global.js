@@ -32,15 +32,17 @@ var SmsC = UCPMC.extend({
 			});
 			$("#sms-menu a.did").on("click", function() {
 				var tdid = $(this).data("did"),
-						sfrom = "";
+						sfrom = "",
+						selected = (UCP.Modules.Contactmanager.lookup(tdid) === false) ? "<option value=\"" + tdid + "\" selected>" + tdid + "</option>" : "";
 				$.each(Sms.dids, function(i, v) {
 					sfrom = sfrom + "<option>" + v + "</option>";
 				});
 				UCP.showDialog(_("Send Message"),
-					"<label for=\"SMSfrom\">From:</label> <select id=\"SMSfrom\" class=\"form-control\">" + sfrom + "</select><label for=\"SMSto\">To:</label><input class=\"form-control\" id=\"SMSto\" type='text' value='" + tdid + "'><button class=\"btn btn-default\" id=\"initiateSMS\" style=\"margin-left: 72px;\">Initiate</button>",
+					"<label for=\"SMSfrom\">From:</label> <select id=\"SMSfrom\" class=\"form-control\">" + sfrom + "</select><label for=\"SMSto\">To:</label><select class=\"form-control Tokenize Fill\" id=\"SMSto\" multiple>" + selected + Sms.contactOptions(tdid) + "</select><button class=\"btn btn-default\" id=\"initiateSMS\" style=\"margin-left: 72px;\">Initiate</button>",
 					200,
 					250,
 					function() {
+						$("#SMSto").tokenize({ maxElements: 1 });
 						$("#initiateSMS").click(function() {
 							Sms.initiateChat();
 						});
@@ -90,18 +92,27 @@ var SmsC = UCPMC.extend({
 			}
 		});
 	},
-	contactOptions: function() {
+	contactOptions: function(did) {
 		if (!UCP.validMethod("Contactmanager", "lookup")) {
 			return "";
 		}
-		var html = "", item = null, key, entry, contact;
+		var html = "", item = null, key, entry, contact, skip = null, display;
+		if (typeof did !== "undefined") {
+			contact = UCP.Modules.Contactmanager.lookup(did);
+			display = did;
+			if (contact !== false) {
+				skip = contact.ignore;
+				display = contact.displayname + " (" + contact.key + ")";
+			}
+			html = "<option value=\"" + did + "\" selected>" + display + "</option>";
+		}
 		for (i = 0; i < UCP.Modules.Contactmanager.contacts.length; i++) {
 			contact = UCP.Modules.Contactmanager.contacts[i];
 			item = UCP.Modules.Contactmanager.contacts[i].numbers;
 			for (key in item) {
 				entry = UCP.Modules.Contactmanager.contacts[i].numbers[key];
 				if (entry !== null) {
-					if (entry.trim() !== "" && entry.displayname !== "") {
+					if (entry.trim() !== "" && entry.displayname !== "" && (skip !== null && skip != i)) {
 						html = html + "<option value='" + entry + "' data-type='" + contact.type + "'>" + contact.displayname + " (" + key + ")</option>";
 					}
 				}
@@ -113,11 +124,11 @@ var SmsC = UCPMC.extend({
 		var entry = null;
 		if (UCP.validMethod("Contactmanager", "lookup")) {
 			scontact = contact.length == 11 ? contact.substring(1) : contact;
-			entry = UCP.Modules.Contactmanager.lookup(scontact, /\D/g);
+			entry = UCP.Modules.Contactmanager.lookup(scontact);
 			if (entry !== null && entry !== false) {
 				return entry.displayname;
 			}
-			entry = UCP.Modules.Contactmanager.lookup(contact, /\D/g);
+			entry = UCP.Modules.Contactmanager.lookup(contact);
 			if (entry !== null && entry !== false) {
 				return entry.displayname;
 			}
