@@ -20,11 +20,11 @@ var SmsC = UCPMC.extend({
 					function() {
 						$("#SMSto").tokenize({ maxElements: 1 });
 						$("#initiateSMS").click(function() {
-							Sms.initiateChat();
+							setTimeout(function() {Sms.initiateChat();}, 50);
 						});
 						$("#SMSto").keypress(function(event) {
 							if (event.keyCode == 13) {
-								Sms.initiateChat();
+								setTimeout(function() {Sms.initiateChat();}, 50);
 							}
 						});
 					}
@@ -33,7 +33,7 @@ var SmsC = UCPMC.extend({
 			$("#sms-menu a.did").on("click", function() {
 				var tdid = $(this).data("did"),
 						sfrom = "",
-						selected = (UCP.Modules.Contactmanager.lookup(tdid) === false) ? "<option value=\"" + tdid + "\" selected>" + tdid + "</option>" : "";
+						selected = ((UCP.validMethod("Contactmanager", "lookup") && UCP.Modules.Contactmanager.lookup(tdid) === false) || !UCP.validMethod("Contactmanager", "lookup")) ? "<option value=\"" + tdid + "\" selected>" + tdid + "</option>" : "";
 				$.each(Sms.dids, function(i, v) {
 					sfrom = sfrom + "<option>" + v + "</option>";
 				});
@@ -44,11 +44,11 @@ var SmsC = UCPMC.extend({
 					function() {
 						$("#SMSto").tokenize({ maxElements: 1 });
 						$("#initiateSMS").click(function() {
-							Sms.initiateChat();
+							setTimeout(function() {Sms.initiateChat();}, 50);
 						});
 						$("#SMSto").keypress(function(event) {
 							if (event.keyCode == 13) {
-								Sms.initiateChat();
+								setTimeout(function() {Sms.initiateChat();}, 50);
 							}
 						});
 					}
