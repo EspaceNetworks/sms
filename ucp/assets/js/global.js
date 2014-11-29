@@ -14,11 +14,14 @@ var SmsC = UCPMC.extend({
 					sfrom = sfrom + "<option>" + v + "</option>";
 				});
 				UCP.showDialog(_("Send Message"),
-					"<label for=\"SMSfrom\">From:</label> <select id=\"SMSfrom\" class=\"form-control\">" + sfrom + "</select><label for=\"SMSto\">To:</label><select class=\"form-control Tokenize Fill\" id=\"SMSto\" multiple>" + Sms.contactOptions() + "</select><button class=\"btn btn-default\" id=\"initiateSMS\" style=\"margin-left: 72px;\">Initiate</button>",
+					"<label for=\"SMSfrom\">From:</label> <select id=\"SMSfrom\" class=\"form-control\">" + sfrom + "</select><label for=\"SMSto\">To:</label><select class=\"form-control Tokenize Fill\" id=\"SMSto\" multiple></select><button class=\"btn btn-default\" id=\"initiateSMS\" style=\"margin-left: 72px;\">Initiate</button>",
 					200,
 					250,
 					function() {
-						$("#SMSto").tokenize({ maxElements: 1 });
+						$("#SMSto").tokenize({
+							maxElements: 1,
+							datas: "index.php?quietmode=1&module=sms&command=contacts"
+						});
 						$("#initiateSMS").click(function() {
 							setTimeout(function() {Sms.initiateChat();}, 50);
 						});
@@ -33,16 +36,21 @@ var SmsC = UCPMC.extend({
 			$("#sms-menu a.did").on("click", function() {
 				var tdid = $(this).data("did"),
 						sfrom = "",
-						selected = ((UCP.validMethod("Contactmanager", "lookup") && UCP.Modules.Contactmanager.lookup(tdid) === false) || !UCP.validMethod("Contactmanager", "lookup")) ? "<option value=\"" + tdid + "\" selected>" + tdid + "</option>" : "";
+						name = (UCP.validMethod("Contactmanager", "lookup") && typeof UCP.Modules.Contactmanager.lookup(tdid).displayname !== "undefined") ? UCP.Modules.Contactmanager.lookup(tdid).displayname : tdid,
+						selected = "";
+				selected = "<option value=\"" + tdid + "\" selected>" + name + "</option>";
 				$.each(Sms.dids, function(i, v) {
 					sfrom = sfrom + "<option>" + v + "</option>";
 				});
 				UCP.showDialog(_("Send Message"),
-					"<label for=\"SMSfrom\">From:</label> <select id=\"SMSfrom\" class=\"form-control\">" + sfrom + "</select><label for=\"SMSto\">To:</label><select class=\"form-control Tokenize Fill\" id=\"SMSto\" multiple>" + selected + Sms.contactOptions(tdid) + "</select><button class=\"btn btn-default\" id=\"initiateSMS\" style=\"margin-left: 72px;\">Initiate</button>",
+					"<label for=\"SMSfrom\">From:</label> <select id=\"SMSfrom\" class=\"form-control\">" + sfrom + "</select><label for=\"SMSto\">To:</label><select class=\"form-control Tokenize Fill\" id=\"SMSto\" multiple>" + selected + "</select><button class=\"btn btn-default\" id=\"initiateSMS\" style=\"margin-left: 72px;\">Initiate</button>",
 					200,
 					250,
 					function() {
-						$("#SMSto").tokenize({ maxElements: 1 });
+						$("#SMSto").tokenize({
+							maxElements: 1,
+							datas: "index.php?quietmode=1&module=sms&command=contacts"
+						});
 						$("#initiateSMS").click(function() {
 							setTimeout(function() {Sms.initiateChat();}, 50);
 						});
@@ -92,6 +100,7 @@ var SmsC = UCPMC.extend({
 			}
 		});
 	},
+	/*
 	contactOptions: function(did) {
 		if (!UCP.validMethod("Contactmanager", "lookup")) {
 			return "";
@@ -120,6 +129,7 @@ var SmsC = UCPMC.extend({
 		}
 		return html;
 	},
+	*/
 	replaceContact: function(contact) {
 		var entry = null;
 		if (UCP.validMethod("Contactmanager", "lookup")) {

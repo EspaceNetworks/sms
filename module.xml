@@ -6,11 +6,12 @@
   <licenselink>http://literature.schmoozecom.com/EUA/FreePBXCommercialModule-EndUserAgreement.txt</licenselink>
   <repo>standard</repo>
   <category>Connectivity</category>
-  <version>12.0.14</version>
+  <version>12.0.15</version>
   <description>
     This module is used to configure and manage SMS chat interfaces inside of the new UCP.
   </description>
   <changelog>
+    *12.0.15* Use contact manager if installed
     *12.0.14* Support for contact manager
     *12.0.13* Allow clicking
     *12.0.12* Tweak the replacer

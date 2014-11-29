@@ -161,6 +161,7 @@ class Sms extends Modules{
 			case 'send':
 			case 'dids':
 			case 'delete':
+			case 'contacts':
 				return true;
 			break;
 			default:
@@ -206,6 +207,25 @@ class Sms extends Modules{
 	function ajaxHandler() {
 		$return = array("status" => false, "message" => "");
 		switch($_REQUEST['command']) {
+			case 'contacts':
+				$return = array();
+				if($this->Modules->moduleHasMethod('Contactmanager','lookupMultiple')) {
+					$search = !empty($_REQUEST['search']) ? $_REQUEST['search'] : "";
+					$results = $this->Modules->Contactmanager->lookupMultiple($search);
+					if(!empty($results)) {
+						foreach($results as $res) {
+							foreach($res['numbers'] as $type => $num) {
+								if(!empty($num)) {
+									$return[] = array(
+										"value" => $num,
+										"text" => $res['displayname'] . " (".$type.")"
+									);
+								}
+							}
+						}
+					}
+				}
+				break;
 			case 'delete':
 				$this->sms->deleteConversations($this->userID, $_REQUEST['from'], $_REQUEST['to']);
 				$return['status'] = true;
