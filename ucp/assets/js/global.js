@@ -36,8 +36,19 @@ var SmsC = UCPMC.extend({
 			$("#sms-menu a.did").on("click", function() {
 				var tdid = $(this).data("did"),
 						sfrom = "",
-						name = (UCP.validMethod("Contactmanager", "lookup") && typeof UCP.Modules.Contactmanager.lookup(tdid).displayname !== "undefined") ? UCP.Modules.Contactmanager.lookup(tdid).displayname : tdid,
-						selected = "";
+						name = tdid,
+						selected = "",
+						temp = "";
+				if (UCP.validMethod("Contactmanager", "lookup")) {
+					if (typeof UCP.Modules.Contactmanager.lookup(tdid).displayname !== "undefined") {
+						name = UCP.Modules.Contactmanager.lookup(tdid).displayname;
+					} else {
+						temp = String(tdid).length == 11 ? String(tdid).substring(1) : tdid;
+						if (typeof UCP.Modules.Contactmanager.lookup(temp).displayname !== "undefined") {
+							name = UCP.Modules.Contactmanager.lookup(temp).displayname;
+						}
+					}
+				}
 				selected = "<option value=\"" + tdid + "\" selected>" + name + "</option>";
 				$.each(Sms.dids, function(i, v) {
 					sfrom = sfrom + "<option>" + v + "</option>";
@@ -100,36 +111,53 @@ var SmsC = UCPMC.extend({
 			}
 		});
 	},
-	/*
-	contactOptions: function(did) {
-		if (!UCP.validMethod("Contactmanager", "lookup")) {
-			return "";
-		}
-		var html = "", item = null, key, entry, contact, skip = null, display;
-		if (typeof did !== "undefined") {
-			contact = UCP.Modules.Contactmanager.lookup(did);
-			display = did;
-			if (contact !== false) {
-				skip = contact.ignore;
-				display = contact.displayname + " (" + contact.key + ")";
-			}
-			html = "<option value=\"" + did + "\" selected>" + display + "</option>";
-		}
-		for (i = 0; i < UCP.Modules.Contactmanager.contacts.length; i++) {
-			contact = UCP.Modules.Contactmanager.contacts[i];
-			item = UCP.Modules.Contactmanager.contacts[i].numbers;
-			for (key in item) {
-				entry = UCP.Modules.Contactmanager.contacts[i].numbers[key];
-				if (entry !== null) {
-					if (entry.trim() !== "" && entry.displayname !== "" && (skip === null || (skip !== null && skip != i))) {
-						html = html + "<option value='" + entry + "' data-type='" + contact.type + "'>" + contact.displayname + " (" + key + ")</option>";
-					}
+	contactClickInitiate: function(did) {
+		var tdid = did, Sms = this,
+		sfrom = "",
+		name = tdid,
+		selected = "",
+		temp = "";
+		if (UCP.validMethod("Contactmanager", "lookup")) {
+			if (typeof UCP.Modules.Contactmanager.lookup(tdid).displayname !== "undefined") {
+				name = UCP.Modules.Contactmanager.lookup(tdid).displayname;
+			} else {
+				temp = String(tdid).length == 11 ? String(tdid).substring(1) : tdid;
+				if (typeof UCP.Modules.Contactmanager.lookup(temp).displayname !== "undefined") {
+					name = UCP.Modules.Contactmanager.lookup(temp).displayname;
 				}
 			}
 		}
-		return html;
+
+		selected = "<option value=\"" + tdid + "\" selected>" + name + "</option>";
+		$.each(Sms.dids, function(i, v) {
+			sfrom = sfrom + "<option>" + v + "</option>";
+		});
+		UCP.showDialog(_("Send Message"),
+			"<label for=\"SMSfrom\">From:</label> <select id=\"SMSfrom\" class=\"form-control\">" + sfrom + "</select><label for=\"SMSto\">To:</label><select class=\"form-control Tokenize Fill\" id=\"SMSto\" multiple>" + selected + "</select><button class=\"btn btn-default\" id=\"initiateSMS\" style=\"margin-left: 72px;\">Initiate</button>",
+			200,
+			250,
+			function() {
+				$("#SMSto").tokenize({
+					maxElements: 1,
+					datas: "index.php?quietmode=1&module=sms&command=contacts"
+				});
+				$("#initiateSMS").click(function() {
+					setTimeout(function() {Sms.initiateChat();}, 50);
+				});
+				$("#SMSto").keypress(function(event) {
+					if (event.keyCode == 13) {
+						setTimeout(function() {Sms.initiateChat();}, 50);
+					}
+				});
+			}
+		);
 	},
-	*/
+	contactClickOptions: function(type) {
+		if (type != "number") {
+			return false;
+		}
+		return [ { text: _("Send SMS"), function: "contactClickInitiate" } ];
+	},
 	replaceContact: function(contact) {
 		var entry = null;
 		if (UCP.validMethod("Contactmanager", "lookup")) {
