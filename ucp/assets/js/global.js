@@ -156,7 +156,7 @@ var SmsC = UCPMC.extend({
 		if (type != "number") {
 			return false;
 		}
-		return [ { text: _("Send SMS"), function: "contactClickInitiate" } ];
+		return [ { text: _("Send SMS"), function: "contactClickInitiate", type: "sms" } ];
 	},
 	replaceContact: function(contact) {
 		var entry = null;
