@@ -7,7 +7,7 @@
 // Bootstrap FreePBX but don't include any modules (so you won't get anything
 // from the functions.inc.php files of all the modules.)
 //
-//$restrict_mods = true;
+$restrict_mods = true;
 if (!@include_once(getenv('FREEPBX_CONF') ? getenv('FREEPBX_CONF') : '/etc/freepbx.conf')) {
 	include_once('/etc/asterisk/freepbx.conf');
 }
