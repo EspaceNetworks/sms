@@ -30,11 +30,9 @@ class Sms extends Modules{
 		$page = !empty($_REQUEST['page']) ? $_REQUEST['page'] : 1;
 		$displayvars['pagnation'] = $this->UCP->Template->generatePagnation($this->sms->getPages($this->userID,$displayvars['search'],$this->limit),$page,'?display=dashboard&mod=sms',5);
 		$displayvars['messages'] = $this->sms->getAllMessagesHistory($this->userID,$displayvars['search'],$displayvars['order'],$displayvars['orderby'],$page,$this->limit);
-		foreach($displayvars['messages'] as &$sender) {
-			foreach($sender as &$thread) {
-				foreach($thread as &$message) {
-					$message['body'] = \Emojione::toImage($message['body']);
-				}
+		foreach($displayvars['messages'] as &$conversation) {
+			foreach($conversation['messages'] as &$message) {
+				$message['body'] = \Emojione::toImage($message['body']);
 			}
 		}
 		$html = $this->load_view(__DIR__.'/views/history.php',$displayvars);
@@ -176,14 +174,12 @@ class Sms extends Modules{
 		}
 		$dlist = "";
 		$count = 1;
-		foreach(array_unique($this->sms->getAllMessagesHistory($this->userID)) as $did) {
-			foreach(array_keys($did) as $d) {
-				if($count > 5) {
-					break(2);
-				}
-				$dlist .= "<li><a class='did' data-did='" . $d . "'>" . $this->replaceDIDwithDisplay($d) . "</a></li>";
-				$count++;
+		foreach($this->sms->getAllMessagesHistory($this->userID) as $did) {
+			if($count > 5) {
+				break;
 			}
+			$dlist .= "<li><a class='did' data-did='" . $did['to'] . "'>" . $did['prettyto'] . "</a></li>";
+			$count++;
 		}
 		$out = array();
 		$out[] = array(

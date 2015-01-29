@@ -242,6 +242,7 @@ class Sms implements \BMO {
 	public function getAllMessagesHistory($uid,$search='',$order='asc',$orderby='date',$start=0,$limit=100) {
 		$dids = $this->getDIDs($uid);
 		$grouped = array();
+		$messages = array();
 		foreach($dids as $did) {
 			$conversations = $this->getConversations($uid, $did);
 			foreach($conversations as $convo) {
@@ -252,66 +253,50 @@ class Sms implements \BMO {
 					$mdid = $convo['to'];
 					$tdid = $convo['from'];
 				}
-				if(!isset($grouped[$mdid][$tdid])) {
+				if(!isset($messages[$mdid."|".$tdid])) {
 					//search first for the 'word'
 					$msgs = $this->getAllMessages($uid,$mdid,$tdid,$search);
 					if(!empty($msgs)) {
 						//ok good now get all messages
-						$grouped[$mdid][$tdid] = $this->getAllMessages($uid,$mdid,$tdid);
+						$messages[$mdid."|".$tdid]['messages'] = $this->getAllMessages($uid,$mdid,$tdid);
+						$messages[$mdid."|".$tdid]['from'] = $mdid;
+						$messages[$mdid."|".$tdid]['to'] = $tdid;
+						$messages[$mdid."|".$tdid]['prettyto'] = $this->replaceDIDwithDisplay($uid,$tdid);
 					}
 				}
 			}
 		}
 		switch($orderby) {
 			case 'from':
-				if($order == 'asc') {
-					ksort($grouped);
-				} else {
-					krsort($grouped);
+				uasort($messages, function($a, $b) {
+					return strcmp($a['from'], $b['from']);
+				});
+				if($order == 'desc') {
+					$messages = array_reverse($messages, true);
 				}
-				$all = $grouped;
 			break;
 			case 'to':
-				uasort($grouped, array($this, 'sortTo'));
-				if($order == 'asc') {
-				} else {
-					$grouped = array_reverse($grouped,true);
+				uasort($messages, function($a, $b) {
+					return strcmp($a['prettyto'], $b['prettyto']);
+				});
+				if($order == 'desc') {
+					$messages = array_reverse($messages, true);
 				}
-				$all = $grouped;
 			break;
 			case 'date':
 			default:
-				uasort($grouped, array($this, 'sortDate'));
-				if($order == 'asc') {
-				} else {
-					$grouped = array_reverse($grouped,true);
+				uasort($messages, function($a, $b) {
+					return ($a['messages'][0]['utime'] < $b['messages'][0]['utime']) ? -1 : 1;
+				});
+				if($order == 'desc') {
+					$messages = array_reverse($messages, true);
 				}
-				$all = $grouped;
 			break;
 		}
+		$all = $messages;
 		$start = ($start > 0) ? ($start-1) : 0;
 
 		return array_slice($all,$start,$limit,true);
-	}
-
-	/**
-	 * Special Sorting function to sort by sub key
-	 * @param {array} $a A Sort
-	 * @param {array} $b B Sort
-	 */
-	public function sortTo($a, $b) {
-		return strcmp(key($a), key($b));
-	}
-
-	/**
-	 * Special Sorting Function to sort by date
-	 * @param {array} $a A Sort
-	 * @param {array} $b B Sort
-	 */
-	public function sortDate($a, $b) {
-		$a1 = current($a);
-		$b1 = current($b);
-		return strcmp($a1[0]['utime'], $b1[0]['utime']);
 	}
 
 	/**
