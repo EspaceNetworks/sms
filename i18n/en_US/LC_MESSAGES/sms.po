@@ -9,79 +9,70 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-02-11 19:06-0500\n"
+"POT-Creation-Date: 2015-02-20 20:02-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: /usr/src/freepbx/sms/ucp/assets/js/global.js:248
 msgid "Are you Sure you wish to delete this chat history?"
 msgstr ""
 
-#: /usr/src/freepbx/sms/ucp/views/history.php:26
+msgid "Connectivity"
+msgstr ""
+
 msgid "Controls"
 msgstr ""
 
-#: /usr/src/freepbx/sms/ucp/views/history.php:24
 msgid "DID"
 msgstr ""
 
-#: /usr/src/freepbx/sms/ucp/views/history.php:13
 msgid "Go"
 msgstr ""
 
-#: /usr/src/freepbx/sms/ucp/assets/js/global.js:299
 msgid "Invalid Number"
 msgstr ""
 
-#: /usr/src/freepbx/sms/ucp/views/history.php:23
 msgid "Last Message Date"
 msgstr ""
 
-#: /usr/src/freepbx/sms/ucp/Sms.class.php:113
-#: /usr/src/freepbx/sms/ucp/Sms.class.php:133
-#: /usr/src/freepbx/sms/ucp/views/history.php:49
 msgid "Me"
 msgstr ""
 
-#: /usr/src/freepbx/sms/ucp/assets/js/global.js:196
 #, perl-format
 msgid "New Message from %s"
 msgstr ""
 
-#: /usr/src/freepbx/sms/ucp/Sms.class.php:190
 msgid "New SMS"
 msgstr ""
 
-#: /usr/src/freepbx/sms/ucp/views/history.php:58
 msgid "No Messages"
 msgstr ""
 
-#: /usr/src/freepbx/sms/ucp/views/history.php:11
+msgid "SMS"
+msgstr ""
+
 msgid "Search"
 msgstr ""
 
-#: /usr/src/freepbx/sms/ucp/assets/js/global.js:16
-#: /usr/src/freepbx/sms/ucp/assets/js/global.js:56
-#: /usr/src/freepbx/sms/ucp/assets/js/global.js:135
 msgid "Send Message"
 msgstr ""
 
-#: /usr/src/freepbx/sms/ucp/assets/js/global.js:159
 msgid "Send SMS"
 msgstr ""
 
-#: /usr/src/freepbx/sms/ucp/assets/js/global.js:315
 msgid "System"
 msgstr ""
 
-#: /usr/src/freepbx/sms/ucp/assets/js/global.js:315
 msgid "There was an error sending this message: "
 msgstr ""
 
-#: /usr/src/freepbx/sms/ucp/views/history.php:25
+msgid ""
+"This module is used to configure and manage SMS chat interfaces inside of "
+"the new UCP."
+msgstr ""
+
 msgid "To"
 msgstr ""
