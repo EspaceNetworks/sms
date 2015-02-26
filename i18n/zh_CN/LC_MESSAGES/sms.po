@@ -1,0 +1,78 @@
+# This file is part of FreePBX.
+#
+# For licensing information, please see the file named LICENSE located in the module directory
+#
+# FreePBX language template for sms
+# Copyright (C) 2008-2015 Sangoma, Inc.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-02-20 20:02-0500\n"
+"PO-Revision-Date: 2015-02-20 20:02-0500\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Are you Sure you wish to delete this chat history?"
+msgstr ""
+
+msgid "Connectivity"
+msgstr ""
+
+msgid "Controls"
+msgstr ""
+
+msgid "DID"
+msgstr ""
+
+msgid "Go"
+msgstr ""
+
+msgid "Invalid Number"
+msgstr ""
+
+msgid "Last Message Date"
+msgstr ""
+
+msgid "Me"
+msgstr ""
+
+#, perl-format
+msgid "New Message from %s"
+msgstr ""
+
+msgid "New SMS"
+msgstr ""
+
+msgid "No Messages"
+msgstr ""
+
+msgid "SMS"
+msgstr ""
+
+msgid "Search"
+msgstr ""
+
+msgid "Send Message"
+msgstr ""
+
+msgid "Send SMS"
+msgstr ""
+
+msgid "System"
+msgstr ""
+
+msgid "There was an error sending this message: "
+msgstr ""
+
+msgid ""
+"This module is used to configure and manage SMS chat interfaces inside of "
+"the new UCP."
+msgstr ""
+
+msgid "To"
+msgstr ""
