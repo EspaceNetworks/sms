@@ -31,7 +31,7 @@ msgid "Controls"
 msgstr ""
 
 msgid "DID"
-msgstr ""
+msgstr "DID"
 
 msgid "Go"
 msgstr ""
