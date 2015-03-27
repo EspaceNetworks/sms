@@ -59,7 +59,7 @@ msgid "SMS"
 msgstr ""
 
 msgid "Search"
-msgstr ""
+msgstr "Buscar"
 
 msgid "Send Message"
 msgstr ""
@@ -68,7 +68,7 @@ msgid "Send SMS"
 msgstr ""
 
 msgid "System"
-msgstr ""
+msgstr "Sistema"
 
 msgid "There was an error sending this message: "
 msgstr ""
@@ -79,4 +79,4 @@ msgid ""
 msgstr ""
 
 msgid "To"
-msgstr ""
+msgstr "Hasta"
