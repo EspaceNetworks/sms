@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-02-20 20:02-0500\n"
-"PO-Revision-Date: 2015-03-31 01:40+0200\n"
+"PO-Revision-Date: 2015-03-31 08:32+0200\n"
 "Last-Translator: Ernesto <ecasas@sangoma.com>\n"
 "Language-Team: Spanish "
 "<http://weblate.freepbx.org/projects/freepbx/sms/es_ES/>\n"
@@ -22,7 +22,7 @@ msgstr ""
 "X-Generator: Weblate 2.2-dev\n"
 
 msgid "Are you Sure you wish to delete this chat history?"
-msgstr ""
+msgstr "Esta seguro desea eliminar esta historia de chat?"
 
 msgid "Connectivity"
 msgstr "Conexiones"
@@ -34,23 +34,23 @@ msgid "DID"
 msgstr "DID"
 
 msgid "Go"
-msgstr ""
+msgstr "ir"
 
 msgid "Invalid Number"
-msgstr ""
+msgstr "Numero Invalido"
 
 msgid "Last Message Date"
-msgstr ""
+msgstr "Fecha Ultimo Mensaje"
 
 msgid "Me"
-msgstr ""
+msgstr "Yo"
 
 #, perl-format
 msgid "New Message from %s"
-msgstr ""
+msgstr "Nuevo Mensaje de %s"
 
 msgid "New SMS"
-msgstr ""
+msgstr "Nuevo SMS"
 
 msgid "No Messages"
 msgstr "No Mensajes"
@@ -62,21 +62,23 @@ msgid "Search"
 msgstr "Buscar"
 
 msgid "Send Message"
-msgstr ""
+msgstr "Mensaje enviando"
 
 msgid "Send SMS"
-msgstr ""
+msgstr "Enviar SMS"
 
 msgid "System"
 msgstr "Sistema"
 
 msgid "There was an error sending this message: "
-msgstr ""
+msgstr "Hubo un error enviando el mensaje: "
 
 msgid ""
 "This module is used to configure and manage SMS chat interfaces inside of "
 "the new UCP."
 msgstr ""
+"Este modulo es usado para configurar y gestionar interfaces de chat SMS "
+"dentro del nuevo UCP."
 
 msgid "To"
 msgstr "A"
