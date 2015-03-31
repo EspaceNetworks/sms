@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-02-20 20:02-0500\n"
-"PO-Revision-Date: 2015-03-30 10:29+0200\n"
+"PO-Revision-Date: 2015-03-31 01:40+0200\n"
 "Last-Translator: Ernesto <ecasas@sangoma.com>\n"
 "Language-Team: Spanish "
 "<http://weblate.freepbx.org/projects/freepbx/sms/es_ES/>\n"
@@ -25,13 +25,13 @@ msgid "Are you Sure you wish to delete this chat history?"
 msgstr ""
 
 msgid "Connectivity"
-msgstr "Conectividad"
+msgstr "Conexiones"
 
 msgid "Controls"
 msgstr "Controles"
 
 msgid "DID"
-msgstr ""
+msgstr "DID"
 
 msgid "Go"
 msgstr ""
@@ -56,7 +56,7 @@ msgid "No Messages"
 msgstr "No Mensajes"
 
 msgid "SMS"
-msgstr ""
+msgstr "SMS"
 
 msgid "Search"
 msgstr "Buscar"
