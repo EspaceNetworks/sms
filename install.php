@@ -15,7 +15,7 @@ $sql = "CREATE TABLE IF NOT EXISTS `sms_messages` (
 	`read` int(1) DEFAULT '0',
 	PRIMARY KEY (`id`),
 	FULLTEXT KEY `TEXT` (`body`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+) ENGINE=MyISAM";
 
 FreePBX::Database()->query($sql);
 
@@ -27,6 +27,5 @@ $sql = "CREATE TABLE IF NOT EXISTS `sms_routing` (
   `accepter` varchar(45) DEFAULT NULL,
   `adaptor` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-";
+) ENGINE=MyISAM";
 FreePBX::Database()->query($sql);
