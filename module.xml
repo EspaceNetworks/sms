@@ -6,11 +6,12 @@
   <licenselink>http://literature.schmoozecom.com/EUA/FreePBXCommercialModule-EndUserAgreement.txt</licenselink>
   <repo>standard</repo>
   <category>Connectivity</category>
-  <version>13.0.1alpha1</version>
+  <version>13.0.2</version>
   <description>
     This module is used to configure and manage SMS chat interfaces inside of the new UCP.
   </description>
   <changelog>
+		*13.0.2* Version bump Beta
     *13.0.1alpha1* Remove DEFAULT charset from module install
     *12.0.19* Update History
     *12.0.18* FREEPBX-8425 SMS Last Message Dates Not Sorting Correctly In UCP
