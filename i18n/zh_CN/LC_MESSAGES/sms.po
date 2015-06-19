@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-02-20 20:02-0500\n"
+"POT-Creation-Date: 2015-06-19 18:48-0400\n"
 "PO-Revision-Date: 2015-02-26 16:27+0200\n"
 "Last-Translator: james <zhulizhong@gmail.com>\n"
 "Language-Team: Simplified Chinese <http://weblate.freepbx.org/projects/"
@@ -23,9 +23,6 @@ msgstr ""
 
 msgid "Are you Sure you wish to delete this chat history?"
 msgstr ""
-
-msgid "Connectivity"
-msgstr "连接"
 
 msgid "Controls"
 msgstr ""
@@ -55,9 +52,6 @@ msgstr ""
 msgid "No Messages"
 msgstr ""
 
-msgid "SMS"
-msgstr ""
-
 msgid "Search"
 msgstr ""
 
@@ -73,10 +67,8 @@ msgstr ""
 msgid "There was an error sending this message: "
 msgstr ""
 
-msgid ""
-"This module is used to configure and manage SMS chat interfaces inside of "
-"the new UCP."
-msgstr ""
-
 msgid "To"
 msgstr ""
+
+#~ msgid "Connectivity"
+#~ msgstr "连接"
