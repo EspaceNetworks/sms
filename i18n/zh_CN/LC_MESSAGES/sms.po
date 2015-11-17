@@ -53,7 +53,7 @@ msgid "No Messages"
 msgstr ""
 
 msgid "Search"
-msgstr ""
+msgstr "查询"
 
 msgid "Send Message"
 msgstr ""
@@ -71,4 +71,4 @@ msgid "To"
 msgstr ""
 
 #~ msgid "Connectivity"
-#~ msgstr "连接"
+#~ msgstr "通信接口连接"
