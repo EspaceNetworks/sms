@@ -68,7 +68,7 @@ msgid "There was an error sending this message: "
 msgstr "Hubo un error enviando el mensaje: "
 
 msgid "To"
-msgstr "a"
+msgstr "A"
 
 #~ msgid "Connectivity"
 #~ msgstr "Conectividad"
