@@ -427,7 +427,7 @@ class Sms implements \BMO {
 	 * Get all Adaptors that have a routing assignment
 	 */
 	public function getAllAdaptors() {
-		$sql = "SELECT DISTINCT adaptor FROM asterisk.sms_routing";
+		$sql = "SELECT DISTINCT adaptor FROM sms_routing";
 		$sth = $this->db->prepare($sql);
 		$sth->execute();
 		$adaptors = $sth->fetchAll(\PDO::FETCH_ASSOC);
