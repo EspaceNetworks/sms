@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-06-19 18:48-0400\n"
+"POT-Creation-Date: 2015-12-14 13:18+1000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,6 +18,9 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 msgid "Are you Sure you wish to delete this chat history?"
+msgstr ""
+
+msgid "Connectivity"
 msgstr ""
 
 msgid "Controls"
@@ -48,6 +51,9 @@ msgstr ""
 msgid "No Messages"
 msgstr ""
 
+msgid "SMS"
+msgstr ""
+
 msgid "Search"
 msgstr ""
 
@@ -61,6 +67,11 @@ msgid "System"
 msgstr ""
 
 msgid "There was an error sending this message: "
+msgstr ""
+
+msgid ""
+"This module is used to configure and manage SMS chat interfaces inside of "
+"the new UCP."
 msgstr ""
 
 msgid "To"

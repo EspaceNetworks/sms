@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-06-19 18:48-0400\n"
+"POT-Creation-Date: 2015-12-14 13:18+1000\n"
 "PO-Revision-Date: 2015-04-12 22:02+0200\n"
 "Last-Translator: Ernesto <ecasas@sangoma.com>\n"
 "Language-Team: Spanish <http://weblate.freepbx.org/projects/freepbx/sms/"
@@ -23,6 +23,9 @@ msgstr ""
 
 msgid "Are you Sure you wish to delete this chat history?"
 msgstr "Esta seguro desea eliminar esta historia de chat?"
+
+msgid "Connectivity"
+msgstr "Conectividad"
 
 msgid "Controls"
 msgstr "Controles"
@@ -52,6 +55,9 @@ msgstr "Nuevo SMS"
 msgid "No Messages"
 msgstr "No Mensajes"
 
+msgid "SMS"
+msgstr "SMS"
+
 msgid "Search"
 msgstr "Buscar"
 
@@ -67,18 +73,12 @@ msgstr "Sistema"
 msgid "There was an error sending this message: "
 msgstr "Hubo un error enviando el mensaje: "
 
+msgid ""
+"This module is used to configure and manage SMS chat interfaces inside of "
+"the new UCP."
+msgstr ""
+"Este modulo es usado para configurar y gestionar interfaces de chat SMS "
+"dentro del nuevo UCP."
+
 msgid "To"
 msgstr "A"
-
-#~ msgid "Connectivity"
-#~ msgstr "Conectividad"
-
-#~ msgid "SMS"
-#~ msgstr "SMS"
-
-#~ msgid ""
-#~ "This module is used to configure and manage SMS chat interfaces inside of "
-#~ "the new UCP."
-#~ msgstr ""
-#~ "Este modulo es usado para configurar y gestionar interfaces de chat SMS "
-#~ "dentro del nuevo UCP."
