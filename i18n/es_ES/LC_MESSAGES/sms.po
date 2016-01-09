@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-12-14 13:18+1000\n"
+"POT-Creation-Date: 2016-01-08 20:06-0800\n"
 "PO-Revision-Date: 2015-04-12 22:02+0200\n"
 "Last-Translator: Ernesto <ecasas@sangoma.com>\n"
 "Language-Team: Spanish <http://weblate.freepbx.org/projects/freepbx/sms/"
@@ -20,6 +20,9 @@ msgstr ""
 "Language: es_ES\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 2.2-dev\n"
+
+msgid "Adaptor not loaded"
+msgstr ""
 
 msgid "Are you Sure you wish to delete this chat history?"
 msgstr "Esta seguro desea eliminar esta historia de chat?"
@@ -44,6 +47,9 @@ msgstr "Fecha Ultimo Mensaje"
 
 msgid "Me"
 msgstr "Yo"
+
+msgid "Message could not be delivered"
+msgstr ""
 
 #, perl-format
 msgid "New Message from %s"
