@@ -335,8 +335,11 @@ class Sms implements \BMO {
 		foreach($dids as $did) {
 			//make sure we can load the adaptor, if not then the DID isnt valid for now
 			try{
+				$res = $this->loadAdaptor($did['Adaptor']);
+				if($res === false) {
+					continue;
+				}
 				$final[] = $did['DID'];
-				$this->loadAdaptor($did['Adaptor']);
 			}catch(\Exception $e) {}
 		}
 		return $final;
@@ -371,6 +374,9 @@ class Sms implements \BMO {
 	public function doDialplanHook(&$ext, $engine, $priority) {
 		foreach($this->getAllAdaptors() as $adaptor) {
 			$adaptor = $this->loadAdaptor($adaptor['adaptor']);
+			if($adaptor === false) {
+				continue;
+			}
 			$adaptor->dialPlanHooks($ext, $engine, $priority);
 		}
 	}
@@ -389,6 +395,9 @@ class Sms implements \BMO {
 		} catch(\Exception $e) {
 			$adaptor = 'Generic';
 		}
+		if(empty($a)) {
+			return false;
+		}
 		if(empty($a['adaptor'])) {
 			$adaptor = 'Generic';
 		}
@@ -402,19 +411,18 @@ class Sms implements \BMO {
 	 */
 	public function loadAdaptor($adaptor) {
 		$adaptor = ucfirst(strtolower($adaptor));
-		if(!class_exists('\FreePBX\modules\Sms\AdaptorBase')) {
+		if(!class_exists('FreePBX\modules\Sms\AdaptorBase')) {
 			include(__DIR__.('/includes/AdaptorBase.class.php'));
 		}
 
-		$classname = '\FreePBX\modules\Sms\Adaptor\\'.$adaptor;
+		$classname = 'FreePBX\modules\Sms\Adaptor\\'.$adaptor;
 
 		if(!class_exists($classname)) {
 			$class = $this->FreePBX->Hooks->processHooks($adaptor);
 			if(!empty($class[$adaptor]) && is_object($class[$adaptor]) && is_a($class[$adaptor],$classname)) {
 				return $class[$adaptor];
 			} elseif(empty($class)) {
-				//TODO: Should we load the generic class here?
-				throw new \Exception('I could not find '.$adaptor);
+				return false;
 			} else {
 				throw new \Exception('I was passed something I did not expect!');
 			}

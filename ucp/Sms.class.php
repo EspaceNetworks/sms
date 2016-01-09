@@ -10,13 +10,23 @@ class Sms extends Modules{
 
 	private $userID = null;
 	private $limit = 25;
+	private $dids = array();
 
 	function __construct($Modules) {
 		$this->Modules = $Modules;
 		$this->user = $this->UCP->User->getUser();
 		$this->userID = $this->user['id'];
 		$this->sms = $this->UCP->FreePBX->Sms;
-		$this->dids = $this->sms->getDIDs($this->user['id']);
+		$dids = $this->sms->getDIDs($this->user['id']);
+		$dids = is_array($dids) ? $dids : array();
+		foreach($dids as $did) {
+			$adaptor = $this->sms->getAdaptor($did);
+			if(is_object($adaptor) && method_exists($adaptor,"showDID") && $adaptor->showDID($this->user['id'], $did)) {
+				$this->dids[] = $dids;
+			} elseif(is_object($adaptor) && !method_exists($adaptor,"showDID")) {
+				$this->dids[] = $dids;
+			}
+		}
 	}
 
 	function getDisplay() {
@@ -246,13 +256,17 @@ class Sms extends Modules{
 			case 'send':
 				$did = $_POST['from'];
 				$adaptor = $this->sms->getAdaptor($did);
-				$name = !empty($this->user['fname']) ? $this->user['fname'] : $this->user['username'];
-				$o = $adaptor->sendMessage($_POST['to'],$this->formatNumber($did),$name,$_POST['message']);
-				if($o['status']) {
-					$return['status'] = true;
-					$return['id'] = $o['id'];
+				if(is_object($adaptor)) {
+					$name = !empty($this->user['fname']) ? $this->user['fname'] : $this->user['username'];
+					$o = $adaptor->sendMessage($_POST['to'],$this->formatNumber($did),$name,$_POST['message']);
+					if($o['status']) {
+						$return['status'] = true;
+						$return['id'] = $o['id'];
+					} else {
+						$return['message'] = _('Message could not be delivered');
+					}
 				} else {
-					$return['message'] = 'Message could not be delivered';
+					$return['message'] = _("Adaptor not loaded");
 				}
 			break;
 			default:
