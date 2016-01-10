@@ -22,9 +22,9 @@ class Sms extends Modules{
 		foreach($dids as $did) {
 			$adaptor = $this->sms->getAdaptor($did);
 			if(is_object($adaptor) && method_exists($adaptor,"showDID") && $adaptor->showDID($this->user['id'], $did)) {
-				$this->dids[] = $dids;
+				$this->dids[] = $did;
 			} elseif(is_object($adaptor) && !method_exists($adaptor,"showDID")) {
-				$this->dids[] = $dids;
+				$this->dids[] = $did;
 			}
 		}
 	}
