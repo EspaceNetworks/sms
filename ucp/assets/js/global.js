@@ -244,55 +244,6 @@ var SmsC = UCPMC.extend({
 			});
 		});
 
-		$(".message-header th[class!=\"noclick\"]").click( function() {
-			var icon = $(this).children("i"),
-					visible = icon.is(":visible"),
-					direction = icon.hasClass("fa-chevron-down") ? "up" : "down",
-					type = $(this).data("type"),
-					uadd = null,
-					search = (typeof $.url().param("search") !== "undefined") ? "&search=" + $.url().param("search") : "";
-			if (!visible) {
-				$(".cdr-header th i").addClass("hidden");
-				icon.removeClass("hidden");
-			}
-			if (direction == "up") {
-				uadd = "&order=asc&orderby=" + type + search;
-				icon.removeClass("fa-chevron-down").addClass("fa-chevron-up");
-			} else {
-				uadd = "&order=desc&orderby=" + type + search;
-				icon.removeClass("fa-chevron-up").addClass("fa-chevron-down");
-			}
-			$(".cdr-header th[class!=\"noclick\"]").off("click");
-			$.pjax({ url: "?display=dashboard&mod=sms" + uadd, container: "#dashboard-content" });
-		});
-		$("i.fa-eye").click(function() {
-			var id = $(this).data("id");
-			$("#" + id + "-messages").toggle();
-			$("#" + id + "-messages").find(".sms-message-body").each(function() { $(this).scrollTop(0); });
-		});
-		$("i.fa-trash-o").click(function() {
-			if (confirm(_("Are you Sure you wish to delete this chat history?"))) {
-				var thread = $(this).parents(".sms-message");
-				$.post( "index.php?quietmode=1&module=sms&command=delete", { from: thread.data("from"), to: thread.data("to") }, function( data ) {
-					if (data.status) {
-						thread.fadeOut("slow");
-					} else {
-
-					}
-				});
-			}
-		});
-		$("#search-text").keypress(function(e) {
-			var code = null;
-			code = (e.keyCode ? e.keyCode : e.which);
-			if (code == 13) {
-				Sms.search($(this).val());
-				e.preventDefault();
-			}
-		});
-		$("#search-btn").click(function() {
-			Sms.search($("#search-text").val());
-		});
 		if (typeof $.url().param("search") !== "undefined") {
 			$(".sms-message-body").highlight($.url().param("search"), "yellow");
 		}
