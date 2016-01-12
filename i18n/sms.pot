@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-01-08 20:06-0800\n"
+"POT-Creation-Date: 2016-01-11 18:38-0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -23,16 +23,29 @@ msgstr ""
 msgid "Are you Sure you wish to delete this chat history?"
 msgstr ""
 
+msgid "Are you sure you wish to delete this conversation?"
+msgstr ""
+
+msgid "Body"
+msgstr ""
+
+msgid "Close"
+msgstr ""
+
 msgid "Connectivity"
 msgstr ""
 
 msgid "Controls"
 msgstr ""
 
+#, php-format
+msgid "Conversation Detail with %s"
+msgstr ""
+
 msgid "DID"
 msgstr ""
 
-msgid "Go"
+msgid "Direction"
 msgstr ""
 
 msgid "Invalid Number"
@@ -54,19 +67,19 @@ msgstr ""
 msgid "New SMS"
 msgstr ""
 
-msgid "No Messages"
+msgid "Received"
 msgstr ""
 
 msgid "SMS"
-msgstr ""
-
-msgid "Search"
 msgstr ""
 
 msgid "Send Message"
 msgstr ""
 
 msgid "Send SMS"
+msgstr ""
+
+msgid "Sent"
 msgstr ""
 
 msgid "System"
@@ -78,6 +91,9 @@ msgstr ""
 msgid ""
 "This module is used to configure and manage SMS chat interfaces inside of "
 "the new UCP."
+msgstr ""
+
+msgid "Time"
 msgstr ""
 
 msgid "To"
