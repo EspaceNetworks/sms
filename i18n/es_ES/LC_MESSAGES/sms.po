@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-01-11 18:38-0800\n"
+"POT-Creation-Date: 2016-01-11 18:39-0800\n"
 "PO-Revision-Date: 2015-04-12 22:02+0200\n"
 "Last-Translator: Ernesto <ecasas@sangoma.com>\n"
 "Language-Team: Spanish <http://weblate.freepbx.org/projects/freepbx/sms/"
@@ -23,9 +23,6 @@ msgstr ""
 
 msgid "Adaptor not loaded"
 msgstr ""
-
-msgid "Are you Sure you wish to delete this chat history?"
-msgstr "Esta seguro desea eliminar esta historia de chat?"
 
 msgid "Are you sure you wish to delete this conversation?"
 msgstr ""
@@ -104,6 +101,9 @@ msgstr ""
 
 msgid "To"
 msgstr "A"
+
+#~ msgid "Are you Sure you wish to delete this chat history?"
+#~ msgstr "Esta seguro desea eliminar esta historia de chat?"
 
 #~ msgid "Go"
 #~ msgstr "ir"
