@@ -34,17 +34,6 @@ class Sms extends Modules{
 			return '';
 		}
 		$displayvars = array();
-		$displayvars['orderby'] = !empty($_REQUEST['orderby']) ? $_REQUEST['orderby'] : 'date';
-		$displayvars['order'] = !empty($_REQUEST['order']) ? $_REQUEST['order'] : 'desc';
-		$displayvars['search'] = !empty($_REQUEST['search']) ? $_REQUEST['search'] : '';
-		$page = !empty($_REQUEST['page']) ? $_REQUEST['page'] : 1;
-		$displayvars['pagnation'] = $this->UCP->Template->generatePagnation($this->sms->getPages($this->userID,$displayvars['search'],$this->limit),$page,'?display=dashboard&mod=sms',5);
-		$displayvars['messages'] = $this->sms->getAllMessagesHistory($this->userID,$displayvars['search'],$displayvars['order'],$displayvars['orderby'],$page,$this->limit);
-		foreach($displayvars['messages'] as &$conversation) {
-			foreach($conversation['messages'] as &$message) {
-				$message['body'] = \Emojione::toImage($message['body']);
-			}
-		}
 		$html = $this->load_view(__DIR__.'/views/history.php',$displayvars);
 		return $html;
 	}
@@ -163,6 +152,7 @@ class Sms extends Modules{
 	 */
 	function ajaxRequest($command, $settings) {
 		switch($command) {
+			case 'messages':
 			case 'history':
 			case 'delivered':
 			case 'read':
@@ -170,6 +160,7 @@ class Sms extends Modules{
 			case 'dids':
 			case 'delete':
 			case 'contacts':
+			case 'grid':
 				return true;
 			break;
 			default:
@@ -213,6 +204,38 @@ class Sms extends Modules{
 	function ajaxHandler() {
 		$return = array("status" => false, "message" => "");
 		switch($_REQUEST['command']) {
+			case 'messages':
+				$search = !empty($_REQUEST['search']) ? $_REQUEST['search'] : '';
+				$t = $this->sms->getAllMessages($this->userID,$_REQUEST['from'],$_REQUEST['to'],$search);
+				return $t;
+			break;
+			case 'grid':
+				$sort = $_REQUEST['sort'];
+				$order = $_REQUEST['order'];
+				$limit = $_REQUEST['limit'];
+				$offset = $_REQUEST['offset'];
+				$search = !empty($_REQUEST['search']) ? $_REQUEST['search'] : '';
+				$messages = $this->sms->getAllMessagesHistory($this->userID,$search,$order,$sort,$offset,$limit);
+				$m = $this->sms->getAllMessagesHistory($this->userID,$search);
+				$total = !empty($m) ? count($m) : 0;
+				$final = array();
+				$rows = array();
+				foreach($messages as $conversation) {
+					$msgs = array();
+					foreach($conversation['messages'] as $message) {
+						$message['body'] = \Emojione::toImage($message['body']);
+						$msgs[] = $message['body'];
+					}
+					reset($conversation['messages']);
+					$rows[] = current($conversation['messages']);
+					$conversation['messages'] = $msgs;
+					$final[] = $conversation;
+				}
+				return array(
+					"total" => $total,
+					"rows" => $rows
+				);
+			break;
 			case 'contacts':
 				$return = array();
 				if($this->Modules->moduleHasMethod('Contactmanager','lookupMultiple')) {

@@ -239,7 +239,7 @@ class Sms implements \BMO {
 	 * @param {int} $start=0        The Starting position
 	 * @param {int} $limit=100      The limit of results to return
 	 */
-	public function getAllMessagesHistory($uid,$search='',$order='asc',$orderby='date',$start=0,$limit=100) {
+	public function getAllMessagesHistory($uid,$search='',$order='asc',$orderby='date',$start=0,$limit=null) {
 		$dids = $this->getDIDs($uid);
 		$grouped = array();
 		$messages = array();
@@ -258,7 +258,13 @@ class Sms implements \BMO {
 					$msgs = $this->getAllMessages($uid,$mdid,$tdid,$search);
 					if(!empty($msgs)) {
 						//ok good now get all messages
-						$messages[$mdid."|".$tdid]['messages'] = $this->getAllMessages($uid,$mdid,$tdid);
+						$m = array();
+						foreach($msgs as $msg) {
+							$msg['did'] = $mdid;
+							$msg['recipient'] = $tdid;
+							$m[] = $msg;
+						}
+						$messages[$mdid."|".$tdid]['messages'] = $m;
 						$messages[$mdid."|".$tdid]['from'] = $mdid;
 						$messages[$mdid."|".$tdid]['to'] = $tdid;
 						$messages[$mdid."|".$tdid]['prettyto'] = $this->replaceDIDwithDisplay($uid,$tdid);
@@ -283,7 +289,7 @@ class Sms implements \BMO {
 					$messages = array_reverse($messages, true);
 				}
 			break;
-			case 'date':
+			case 'utime':
 			default:
 				uasort($messages, function($a, $b) {
 					return ($a['messages'][0]['utime'] < $b['messages'][0]['utime']) ? -1 : 1;
@@ -296,7 +302,7 @@ class Sms implements \BMO {
 		$all = $messages;
 		$start = ($start > 0) ? ($start-1) : 0;
 
-		return array_slice($all,$start,$limit,true);
+		return !is_null($limit) ? array_slice($all,$start,$limit,true) : $all;
 	}
 
 	/**
@@ -304,7 +310,7 @@ class Sms implements \BMO {
 	 * @param {int} $did The DID
 	 */
 	public function getConversations($uid, $did) {
-		$sql = "SELECT DISTINCT a.`from`, a.`to` FROM `sms_messages` a, sms_routing b WHERE (a.`from` = :did OR a.`to` = :did) AND (b.did = :did OR b.did = :did) AND b.uid = :uid ORDER BY UNIX_TIMESTAMP(tx_rx_datetime);";
+		$sql = "SELECT DISTINCT a.`from`, a.`to`, b.`did` FROM `sms_messages` a, sms_routing b WHERE (a.`from` = :did OR a.`to` = :did) AND (b.did = :did OR b.did = :did) AND b.uid = :uid ORDER BY UNIX_TIMESTAMP(tx_rx_datetime);";
 		$sth = $this->db->prepare($sql);
 		$sth->execute(array(":did" => $did, ":uid" => $uid));
 		$conversations = $sth->fetchAll(\PDO::FETCH_ASSOC);
@@ -313,7 +319,7 @@ class Sms implements \BMO {
 
 	public function deleteConversations($uid, $did1, $did2) {
 		try {
-			$sql = "DELETE a FROM `sms_messages` a, `sms_routing` b WHERE ((a.`from` = :did1 OR a.`to` = :did1) OR (a.`from` = :did2 OR a.`to` = :did2)) AND (b.did = :did1 OR b.did = :did2) AND b.uid = :uid";
+			$sql = "DELETE a FROM `sms_messages` a, `sms_routing` b WHERE ((a.`from` = :did1 AND a.`to` = :did2) OR (a.`from` = :did2 OR a.`to` = :did1)) AND b.uid = :uid";
 			$sth = $this->db->prepare($sql);
 			$sth->execute(array(":did1" => $did1, ":did2" => $did2, ":uid" => $uid));
 			return true;

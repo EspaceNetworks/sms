@@ -208,6 +208,9 @@ var SmsC = UCPMC.extend({
 			});
 			if (delivered.length) {
 				$.post( "index.php?quietmode=1&module=sms&command=delivered", { ids: delivered }, function( data ) {});
+				if($('#sms-grid').length) {
+					$('#sms-grid').bootstrapTable('refresh', {silent: true});
+				}
 			}
 		}
 	},
@@ -218,6 +221,29 @@ var SmsC = UCPMC.extend({
 			var container = $("#dashboard-content");
 			$.pjax.click(event, { container: container });
 		});
+
+		$('#sms-grid').on("post-body.bs.table", function () {
+			$("#sms-grid .delete").click(function() {
+				var from = $(this).data("from"), to = $(this).data("to"), id = $(this).data("id");
+				if(confirm(_("Are you sure you wish to delete this conversation?"))) {
+					$.post( "index.php?quietmode=1&module=sms&command=delete", { from: from, to: to }, function( data ) {
+						if(data.status) {
+							$('#sms-grid').bootstrapTable('remove', {field: "id", values: [String(id)]});
+						}
+					});
+				}
+			});
+			$("#sms-grid .view").click(function() {
+				var from = $(this).data("from"), to = $(this).data("to");
+				$('#smspreview').modal('toggle');
+				$("#sms-detail-grid").bootstrapTable('showLoading');
+				$.post( "index.php?quietmode=1&module=sms&command=messages", { from: from, to: to }, function( data ) {
+					$("#sms-detail-grid").bootstrapTable('load', data);
+					$("#sms-detail-grid").bootstrapTable('hideLoading');
+				});
+			});
+		});
+
 		$(".message-header th[class!=\"noclick\"]").click( function() {
 			var icon = $(this).children("i"),
 					visible = icon.is(":visible"),
@@ -310,6 +336,9 @@ var SmsC = UCPMC.extend({
 			if (data.status) {
 				UCP.addChatMessage(windowId, from, data.id, message, false);
 				$(".message-box[data-id='" + windowId + "'] textarea").val("");
+				if($('#sms-grid').length) {
+					$('#sms-grid').bootstrapTable('refresh', {silent: true});
+				}
 			} else {
 				//TODO: Error message about sending here!
 				//UCP.addChatMessage(windowId, _("System"), data.id, _("There was an error sending this message: "), false);
@@ -317,5 +346,28 @@ var SmsC = UCPMC.extend({
 			$(".message-box[data-id='" + windowId + "'] textarea").prop("disabled", false);
 			$(".message-box[data-id='" + windowId + "'] textarea").focus();
 		});
+	},
+	dateFormatter: function(value) {
+		return UCP.dateFormatter(value);
+	},
+	actionFormatter: function(value, row) {
+		return '<a><i class="fa fa-eye view" data-from="'+row.from+'" data-to="'+row.to+'"></i></a><a><i class="fa fa-trash-o delete" data-from="'+row.from+'" data-to="'+row.to+'" data-id="'+row.id+'"></i></a></td>';
+	},
+	toFormatter: function(value, row) {
+		return '<a onclick="UCP.Modules.Sms.startChat(\''+row.did+'\',\''+row.recipient+'\')">'+row.recipient+'</a>';
+	},
+	directionFormatter: function(value) {
+		switch(value) {
+			case "out":
+				return _("Sent");
+			break;
+			case "in":
+				return _("Received");
+			break;
+		}
+	},
+	bodyFormatter: function(value, row) {
+		$("#cnam").text(row.cnam);
+		return emojione.unifyUnicode(value);
 	}
 });

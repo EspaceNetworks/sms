@@ -2,64 +2,68 @@
 	<?php if(!empty($message)) { ?>
 		<div class="alert alert-<?php echo $message['type']?>"><?php echo $message['message']?></div>
 	<?php } ?>
-	<div class="row">
-		<div class="col-sm-8">
-			<?php echo $pagnation;?>
-		</div>
-		<div class="col-sm-4">
-			<div class="input-group">
-				<input type="text" class="form-control" id="search-text" placeholder="<?php echo _('Search')?>" value="<?php echo $search?>">
-				<span class="input-group-btn">
-					<button class="btn btn-default" type="button" id="search-btn"><?php echo _("Go")?>!</button>
-				</span>
+	<table id="sms-grid"
+        data-url="index.php?quietmode=1&amp;module=sms&amp;command=grid"
+        data-cache="false"
+        data-cookie="true"
+        data-cookie-id-table="ucp-sms-table"
+        data-maintain-selected="true"
+        data-show-columns="true"
+        data-show-toggle="true"
+        data-toggle="table"
+        data-pagination="true"
+        data-search="true"
+				data-sort-order="desc"
+				data-sort-name="utime"
+				data-side-pagination="server"
+				data-show-refresh="true"
+				data-silent-sort="false"
+				data-mobile-responsive="true"
+				data-check-on-init="true"
+				data-min-width="992"
+        class="table table-hover">
+    <thead>
+            <tr class="sms-header">
+            <th data-field="utime" data-sortable="true" data-formatter="UCP.Modules.Sms.dateFormatter"><?php echo _("Last Message Date")?></th>
+            <th data-field="did" data-sortable="true"><?php echo _("DID")?></th>
+						<th data-field="recipient" data-sortable="true" data-formatter="UCP.Modules.Sms.toFormatter"><?php echo _("To")?></th>
+						<th data-field="controls" data-formatter="UCP.Modules.Sms.actionFormatter"><?php echo _("Controls")?></th>
+        </tr>
+    </thead>
+</table>
+	<div class="modal fade" id="smspreview" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="myModalLabel"><?php echo sprintf(_("Conversation Detail with %s"),"<span id='cnam'></span>")?></h4>
+				</div>
+				<div class="modal-body">
+					<table id="sms-detail-grid"
+						data-cookie="true"
+						data-cookie-id-table="ucp-sms-detail-table"
+						data-show-columns="true"
+		        data-show-toggle="true"
+		        data-toggle="table"
+		        data-pagination="true"
+		        data-search="true"
+						data-sort-order="desc"
+						data-sort-name="utime"
+						data-mobile-responsive="true"
+						data-check-on-init="true"
+						data-min-width="992"
+						>
+						<thead>
+							<th data-field="utime" data-sortable="true" data-formatter="UCP.Modules.Sms.dateFormatter"><?php echo _("Time")?></th>
+							<th data-field="direction" data-sortable="true" data-formatter="UCP.Modules.Sms.directionFormatter"><?php echo _("Direction")?></th>
+							<th data-field="body" data-sortable="true" data-formatter="UCP.Modules.Sms.bodyFormatter"><?php echo _("Body")?></th>
+						</thead>
+					</table>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal"><?php echo _("Close")?></button>
+				</div>
 			</div>
 		</div>
 	</div>
-	<div class="table-responsive">
-		<table id="sms-table" class="table table-hover table-bordered message-table message-list">
-			<thead>
-				<tr class="message-header">
-					<th class="noclick"></th>
-					<th data-type="date"><?php echo _('Last Message Date')?> <i class="fa fa-chevron-<?php echo ($order == 'desc' && $orderby == 'date') ? 'down' : 'up'?> <?php echo ($orderby == 'date') ? '' : 'hidden'?>"></i></th>
-					<th data-type="from"><?php echo _('DID')?> <i class="fa fa-chevron-<?php echo ($order == 'desc' && $orderby == 'from') ? 'down' : 'up'?> <?php echo ($orderby == 'from') ? '' : 'hidden'?>"></i></th>
-					<th data-type="to"><?php echo _('To')?> <i class="fa fa-chevron-<?php echo ($order == 'desc' && $orderby == 'to') ? 'down' : 'up'?> <?php echo ($orderby == 'to') ? '' : 'hidden'?>"></i></th>
-					<th class="noclick"><?php echo _('Controls')?></th>
-				</tr>
-			</thead>
-			<tbody>
-			<?php if(!empty($messages)) {?>
-				<?php foreach($messages as $conversation){?>
-						<?php $c = count($conversation['messages']); $last = $conversation['messages'][0]; $prev = 0;?>
-						<tr class="sms-message" data-from="<?php echo $conversation['from']?>" data-to="<?php echo $conversation['to']?>">
-							<td class=""></td>
-							<td class=""><?php echo $last['tx_rx_datetime']?></td>
-							<td class=""><?php echo $conversation['from']?></td>
-							<td class=""><a onclick="UCP.Modules.Sms.startChat('<?php echo $conversation['from']?>','<?php echo $conversation['to']?>')"><?php echo $conversation['prettyto'] ?></a></td>
-							<td class="actions"><a><i class="fa fa-eye" data-id="<?php echo $conversation['from']?><?php echo $conversation['to']?>"></i></a><a><i class="fa fa-trash-o"></i></a></td>
-						</tr>
-						<tr class="sms-message-body-container" id="<?php echo $conversation['from']?><?php echo $conversation['to']?>-messages">
-							<td class=""></td>
-							<td class="" colspan="4">
-								<div class="sms-message-body">
-									<?php foreach($conversation['messages'] as $message) { ?>
-										<?php if($prev != date('j',$message['utime'])) {?>
-											<div class="full-date"><?php echo date('m/d/Y',$message['utime'])?></div>
-											<hr>
-										<?php } ?>
-										<span class="date">[<?php echo date('H:i',$message['utime'])?>]</span> <span class="name"><?php echo ($conversation['from'] == $message['from']) ? _('Me') : \UCP\UCP::create()->Modules->Sms->replaceDIDwithDisplay($message['from'])?></span>: <?php echo $message['body']?><br/>
-										<?php $prev = date('j',$message['utime']);?>
-									<?php } ?>
-								</div>
-							</td>
-						</tr>
-				<?php }?>
-			<?php } else { ?>
-				<tr id="no-messages" class="sms-message">
-					<td colspan="8"><?php echo _('No Messages')?></td>
-				</tr>
-			<?php } ?>
-			</tbody>
-		</table>
-	</div>
-	<?php echo $pagnation;?>
 </div>
