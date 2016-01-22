@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-01-11 18:39-0800\n"
-"PO-Revision-Date: 2016-01-21 18:38+0200\n"
+"PO-Revision-Date: 2016-01-22 09:28+0200\n"
 "Last-Translator: Nicolas <forums@riendeau.org>\n"
 "Language-Team: French "
 "<http://weblate.freepbx.org/projects/freepbx/sms/fr_FR/>\n"
@@ -22,10 +22,10 @@ msgstr ""
 "X-Generator: Weblate 2.2-dev\n"
 
 msgid "Adaptor not loaded"
-msgstr ""
+msgstr "Adaptateur non chargé"
 
 msgid "Are you sure you wish to delete this conversation?"
-msgstr ""
+msgstr "Êtes-vous sur de vouloir supprimer cette conversation ?"
 
 msgid "Body"
 msgstr "Corps"
@@ -37,14 +37,14 @@ msgid "Connectivity"
 msgstr "Connectivité"
 
 msgid "Controls"
-msgstr ""
+msgstr "Contrôles"
 
 #, php-format
 msgid "Conversation Detail with %s"
-msgstr ""
+msgstr "Détail de la conversation avec %s"
 
 msgid "DID"
-msgstr ""
+msgstr "DID"
 
 msgid "Direction"
 msgstr "Direction"
@@ -53,32 +53,32 @@ msgid "Invalid Number"
 msgstr "Numéro invalide"
 
 msgid "Last Message Date"
-msgstr ""
+msgstr "Date du dernier message"
 
 msgid "Me"
-msgstr ""
+msgstr "Moi"
 
 msgid "Message could not be delivered"
-msgstr ""
+msgstr "Le message n'a pu être acheminé"
 
 #, perl-format
 msgid "New Message from %s"
-msgstr ""
+msgstr "Nouveau message de %s"
 
 msgid "New SMS"
-msgstr ""
+msgstr "Nouveau SMS"
 
 msgid "Received"
 msgstr "Reçu"
 
 msgid "SMS"
-msgstr ""
+msgstr "SMS"
 
 msgid "Send Message"
-msgstr ""
+msgstr "Envoyer message"
 
 msgid "Send SMS"
-msgstr ""
+msgstr "Envoyer SMS"
 
 msgid "Sent"
 msgstr "Envoyé"
@@ -93,9 +93,11 @@ msgid ""
 "This module is used to configure and manage SMS chat interfaces inside of "
 "the new UCP."
 msgstr ""
+"Ce module sert à configurer et gérer l'interface les SMS à l'intérieur du "
+"nouveau UCP."
 
 msgid "Time"
-msgstr ""
+msgstr "Heure"
 
 msgid "To"
-msgstr ""
+msgstr "À"
