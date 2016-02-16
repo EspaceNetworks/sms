@@ -46,6 +46,7 @@ class Sms extends Modules{
 		//see if there are any new messages since the last checked time
 		$mdata['lastchecked'] = !empty($mdata['lastchecked']) ? $mdata['lastchecked'] : null;
 		$newmessages = $this->sms->getMessagesSinceTime($this->userID,$mdata['lastchecked']);
+		$unread = $this->sms->getUnreadCount($this->userID);
 		if(!empty($newmessages)) {
 			foreach($newmessages as $messageb) {
 				$mid = $messageb['id'];
@@ -98,7 +99,8 @@ class Sms extends Modules{
 			$m = array_values($m);
 			$m = array_reverse($m);
 		}
-		return array('status' => true, 'messages' => $messages);
+		$count = count($messages);
+		return array('status' => true, 'messages' => $messages, 'total' => $unread);
 	}
 
 	function getChatHistory($from, $to, $newWindow) {
@@ -317,7 +319,7 @@ class Sms extends Modules{
 		$menu = array(
 			"rawname" => "sms",
 			"name" => "Sms",
-			"badge" => false
+			"badge" => true
 		);
 		return $menu;
 	}
