@@ -6,11 +6,12 @@
   <licenselink>http://literature.schmoozecom.com/EUA/FreePBXCommercialModule-EndUserAgreement.txt</licenselink>
   <repo>standard</repo>
   <category>Connectivity</category>
-  <version>13.0.5</version>
+  <version>13.0.6</version>
   <description>
     This module is used to configure and manage SMS chat interfaces inside of the new UCP.
   </description>
-  <changelog>
+	<changelog>
+		*13.0.6* FREEPBX-11413 Add count badge for UCP menu
     *13.0.5* FREEPBX-11098 use bootstrap tables, fix formatting and display
     *13.0.4* Fix did array issue breaking sending
     *13.0.3* FREEPBX-11095
