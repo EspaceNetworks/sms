@@ -190,6 +190,7 @@ var SmsC = UCPMC.extend({
 		var Sms = this,
 				delivered = [];
 		if (data.status) {
+			$("#sms-badge").text(data.total);
 			$.each(data.messages, function(windowid, messages) {
 				$.each(messages, function(index, v) {
 					if (!$(".message-box[data-id=\"" + windowid + "\"] .message[data-id=\"" + v.id + "\"]").length) {

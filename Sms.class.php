@@ -466,4 +466,11 @@ class Sms implements \BMO {
 		}
 		return $did;
 	}
+	public function getUnreadCount($id){
+		$sql = "SELECT m.* FROM sms_messages m, sms_routing r WHERE r.uid = :id AND (m.from = r.did OR m.to = r.did) AND `read` = 0";
+		$sth = $this->db->prepare($sql);
+		$sth->execute(array(':id' => $id));
+		$count = count($sth->fetchall(\PDO::FETCH_ASSOC));
+		return $count;
+	}
 }
