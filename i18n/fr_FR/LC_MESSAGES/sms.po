@@ -1,0 +1,103 @@
+# This file is part of FreePBX.
+#
+# For licensing information, please see the file named LICENSE located in the module directory
+#
+# FreePBX language template for sms
+# Copyright (C) 2008-2016 Sangoma, Inc.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-01-11 18:39-0800\n"
+"PO-Revision-Date: 2016-01-24 06:32+0200\n"
+"Last-Translator: Nicolas <forums@riendeau.org>\n"
+"Language-Team: French "
+"<http://weblate.freepbx.org/projects/freepbx/sms/fr_FR/>\n"
+"Language: fr_FR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 2.2-dev\n"
+
+msgid "Adaptor not loaded"
+msgstr "Adaptateur non chargé"
+
+msgid "Are you sure you wish to delete this conversation?"
+msgstr "Êtes-vous sur de vouloir supprimer cette conversation ?"
+
+msgid "Body"
+msgstr "Corps"
+
+msgid "Close"
+msgstr "Fermer"
+
+msgid "Connectivity"
+msgstr "Connectivité"
+
+msgid "Controls"
+msgstr "Contrôles"
+
+#, php-format
+msgid "Conversation Detail with %s"
+msgstr "Détail de la conversation avec %s"
+
+msgid "DID"
+msgstr "DID"
+
+msgid "Direction"
+msgstr "Direction"
+
+msgid "Invalid Number"
+msgstr "Numéro invalide"
+
+msgid "Last Message Date"
+msgstr "Date du dernier message"
+
+msgid "Me"
+msgstr "Moi"
+
+msgid "Message could not be delivered"
+msgstr "Le message n'a pu être acheminé"
+
+#, perl-format
+msgid "New Message from %s"
+msgstr "Nouveau message de %s"
+
+msgid "New SMS"
+msgstr "Nouveau SMS"
+
+msgid "Received"
+msgstr "Reçu"
+
+msgid "SMS"
+msgstr "SMS"
+
+msgid "Send Message"
+msgstr "Envoyer message"
+
+msgid "Send SMS"
+msgstr "Envoyer SMS"
+
+msgid "Sent"
+msgstr "Envoyé"
+
+msgid "System"
+msgstr "Système"
+
+msgid "There was an error sending this message: "
+msgstr "Il y a eu une erreur lors de l'envoi de ce message: "
+
+msgid ""
+"This module is used to configure and manage SMS chat interfaces inside of "
+"the new UCP."
+msgstr ""
+"Ce module sert à configurer et gérer l'interface les SMS à l'intérieur du "
+"nouveau UCP."
+
+msgid "Time"
+msgstr "Heure"
+
+msgid "To"
+msgstr "À"
