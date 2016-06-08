@@ -7,30 +7,78 @@ abstract class AdaptorBase {
 
 	public function __construct() {
 		$this->db = \FreePBX::Database();
+		if(!class_exists('Emojione\Emojione')) {
+			include __DIR__."/Emojione.class.php";
+		}
+		$this->emoji = new \Emojione\Client(new \Emojione\Ruleset());
 	}
 
-	public function sendMessage($to,$from,$cnam,$message) {
-		$sql = "INSERT INTO sms_messages (`from`, `to`, `cnam`, `direction`, `tx_rx_datetime`, `body`) VALUES (?, ?, ?, 'out', CURRENT_TIMESTAMP, ?)";
+	/**
+	 * Insert a sent message into the database
+	 * @param  integer $to      The DID the message was sent to
+	 * @param  integer $from    The DID the message was from
+	 * @param  string $cnam    The CNAME of the message
+	 * @param  string $message The message
+	 * @param  integer $time    Unix Timestamp when the message was set (Use null for NOW())
+	 * @param  string $adaptor The adaptor used to send the message
+	 * @param  string $emid    External message id is there is one
+	 * @return integer          The ID of the row that was inserted
+	 */
+	public function sendMessage($to,$from,$cnam,$message,$time=null,$adaptor=null,$emid=null) {
+		$sql = "INSERT INTO sms_messages (`from`, `to`, `cnam`, `direction`, `tx_rx_datetime`, `body`, `adaptor`, `emid`) VALUES (?, ?, ?, 'out', from_unixtime(?), ?, ?, ?)";
 		try {
 			$sth = $this->db->prepare($sql);
-			$message = \Emojione::toShort($message);
-			$sth->execute(array($from, $to, $cnam, $message));
+			$message = $this->emoji->toShort($message);
+			$time = !empty($time) ? $time : time();
+			$sth->execute(array($from, $to, $cnam, $time, $message, $adaptor, $emid));
 			return $this->db->lastInsertId();
 		} catch (\Exception $e) {
 			throw new Exception('Unable to Insert Message into DB');
 		}
 	}
 
-	public function getMessage($to,$from,$cnam,$message) {
-		$sql = "INSERT INTO sms_messages (`from`, `to`, `cnam`, `direction`, `tx_rx_datetime`, `body`) VALUES (?, ?, ?, 'in', CURRENT_TIMESTAMP, ?)";
+	/**
+	 * Insert a received message into the database
+	 * @param  integer $to      The DID the message was sent to
+	 * @param  integer $from    The DID the message was from
+	 * @param  string $cnam    The CNAME of the message
+	 * @param  string $message The message
+	 * @param  integer $time    Unix Timestamp when the message was set (Use null for NOW())
+	 * @param  string $adaptor The adaptor used to send the message
+	 * @param  string $emid    External message id is there is one
+	 * @return integer          The ID of the row that was inserted
+	 */
+	public function getMessage($to,$from,$cnam,$message,$time=null,$adaptor=null,$emid=null) {
+		$sql = "INSERT INTO sms_messages (`from`, `to`, `cnam`, `direction`, `tx_rx_datetime`, `body`, `adaptor`, `emid`) VALUES (?, ?, ?, 'in', from_unixtime(?), ?, ?, ?)";
 		try {
 			$sth = $this->db->prepare($sql);
-			$message = \Emojione::toShort($message);
-			$sth->execute(array($from, $to, $cnam, $message));
+			$message = $this->emoji->toShort($message);
+			$time = !empty($time) ? $time : time();
+			$sth->execute(array($from, $to, $cnam, $time, $message, $adaptor, $emid));
+			return $this->db->lastInsertId();
 		} catch (\Exception $e) {
 			throw new Exception('Unable to Insert Message into DB');
 		}
 	}
 
+	/**
+	 * Add Media into the database for sent or received messages
+	 * @param integer $msgid The message ID from getMessage or sendMessage
+	 * @param string $name  The filename
+	 * @param string $data  The raw data from the file
+	 */
+	public function addMedia($msgid, $name, $data) {
+		$sql = "INSERT INTO sms_media (`mid`, `name`, `raw`) VALUES (?, ?, ?)";
+		try {
+			$sth = $this->db->prepare($sql);
+			$sth->execute(array($msgid, $name, $data));
+		} catch (\Exception $e) {
+			throw new Exception('Unable to Insert Media into DB');
+		}
+	}
+
+	/**
+	 * Hooks for adaptor classes to modify dialplan
+	 */
 	public function dialPlanHooks(&$ext, $engine, $priority) {}
 }

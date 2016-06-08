@@ -96,7 +96,7 @@ var SmsC = UCPMC.extend({
 							$(".message-box[data-id=\"" + windowId + "\"] .chat .history .status").remove();
 							var html = "";
 							$.each(data.messages, function(i, v) {
-								html = html + "<div class=\"message\" data-id=\"" + v.id + "\"><strong>" + v.from + ":</strong>" + v.message + "</div>";
+								html = html + "<div class=\"message "+v.direction+"\" data-id=\"" + v.id + "\">" + v.message + "</div>";
 							});
 							$(".message-box[data-id=\"" + windowId + "\"] .chat .history").prepend(html);
 						});
@@ -236,6 +236,7 @@ var SmsC = UCPMC.extend({
 			});
 			$("#sms-grid .view").click(function() {
 				var from = $(this).data("from"), to = $(this).data("to");
+				$("#cnam").text(from);
 				$('#smspreview').modal('toggle');
 				$("#sms-detail-grid").bootstrapTable('showLoading');
 				$.post( "index.php?quietmode=1&module=sms&command=messages", { from: from, to: to }, function( data ) {
@@ -319,7 +320,6 @@ var SmsC = UCPMC.extend({
 		}
 	},
 	bodyFormatter: function(value, row) {
-		$("#cnam").text(row.cnam);
-		return emojione.unifyUnicode(value);
+		return emojione.toImage(value);
 	}
 });

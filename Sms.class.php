@@ -11,7 +11,7 @@ class Sms implements \BMO {
 		}
 		$this->FreePBX = $freepbx;
 		$this->db = $freepbx->Database;
-		if(!class_exists("Emojione")) {
+		if(!class_exists("Emojione\Emojione")) {
 			include(__DIR__."/includes/Emojione.class.php");
 		}
 	}
@@ -34,6 +34,70 @@ class Sms implements \BMO {
 
 	public function myDialplanHooks() {
 		return true;
+	}
+
+	public function getMediaByName($name) {
+		$sql = "SELECT * FROM sms_media WHERE `name` = ?";
+		$sth = $this->db->prepare($sql);
+		$sth->execute(array($name));
+		$media = $sth->fetch(\PDO::FETCH_ASSOC);
+		if(!empty($media)) {
+			return $media['raw'];
+		}
+	}
+
+	public function getMediaByID($id) {
+		$sql = "SELECT * FROM sms_media WHERE `mid` = ?";
+		$sth = $this->db->prepare($sql);
+		$sth->execute(array($id));
+		$medias = $sth->fetchAll(\PDO::FETCH_ASSOC);
+		$final = array();
+		$smil = null;
+		$files = array();
+		foreach($medias as $media) {
+			$ext = pathinfo($media['name'],PATHINFO_EXTENSION);
+			if($ext == "smil") {
+				$smil = $media['raw'];
+				continue;
+			}
+			$files[$media['name']] = $media['raw'];
+		}
+		if(!empty($smil)) {
+			$xml = simplexml_load_string($smil);
+			foreach($xml->body->par as $parts) {
+				foreach($parts as $type => $data) {
+					foreach($data->attributes() as $a => $b) {
+						if($a == 'src') {
+							$name = (string)$b;
+							$final[] = array(
+								'type' => $type,
+								'link' => $name,
+								'data' => $files[$name]
+							);
+						}
+					}
+				}
+			}
+		} else {
+			foreach($files as $name => $data) {
+				$ext = pathinfo($name,PATHINFO_EXTENSION);
+				switch($ext) {
+					case "png":
+					case "jpg":
+					case "jpeg":
+					case "gif":
+					case "tiff":
+						$type = 'img';
+					break;
+				}
+				$final[] = array(
+					'type' => $type,
+					'link' => $name,
+					'data' => $datae
+				);
+			}
+		}
+		return $final;
 	}
 
 	/**

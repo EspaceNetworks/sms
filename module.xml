@@ -18,27 +18,11 @@
     *13.0.2.1* Fix database name typo
     *13.0.2* Version bump Beta
     *13.0.1alpha1* Remove DEFAULT charset from module install
-    *12.0.19* Update History
-    *12.0.18* FREEPBX-8425 SMS Last Message Dates Not Sorting Correctly In UCP
-    *12.0.17* Contact manager updates
-    *12.0.16* Support click to action in UCP
-    *12.0.15* Use contact manager if installed
-    *12.0.14* Support for contact manager
-    *12.0.13* Allow clicking
-    *12.0.12* Tweak the replacer
-    *12.0.11* Regular Expression replacing
-    *12.0.10* Minor fix
-    *12.0.9* Use contact manager if present
-    *12.0.8* Updates for UCP
-    *12.0.7* FREEPBX-7992 Deleting conversations, last message date, reverse sorting fixes. Security.
-    *12.0.6* UCP tweaks
-    *12.0.5* Undefined Index Warning Fix
-    *12.0.4* Clean up so we dont see undefined index issues
   </changelog>
   <depends>
     <engine>asterisk 11</engine>
     <module>ucp</module>
-    <version>12.0.1beta23</version>
+    <version>13.0.128</version>
   </depends>
   <supported>
     <version>13.0</version>

@@ -109,11 +109,14 @@ class Sms extends Modules{
 		$final = array();
 		if(!empty($messages)) {
 			foreach($messages as $m) {
+				$html = $this->getMessageHtmlByID($m['id']);
+				$body = !empty($html) ? $html : $this->UCP->emoji->toImage($m['body']);
 				$final['messages'][] = array(
 					'id' => $m['id'],
 					'from' => in_array($m['from'],$this->dids) ? _('Me') : $this->replaceDIDwithDisplay($m['from']),
-					'message' => trim(\Emojione::toImage($m['body'])),
-					'date' => strtotime($m['tx_rx_datetime'])
+					'message' => $body,
+					'date' => strtotime($m['tx_rx_datetime']),
+					'direction' => $m['direction']
 				);
 			}
 			$final['lastMessage'] = $final['messages'][0];
@@ -129,11 +132,14 @@ class Sms extends Modules{
 		$final = array();
 		if(!empty($messages)) {
 			foreach($messages as $m) {
+				$html = $this->getMessageHtmlByID($m['id']);
+				$body = !empty($html) ? $html : $this->UCP->emoji->toImage($m['body']);
 				$final[] = array(
 					'id' => $m['id'],
 					'from' => in_array($m['from'],$this->dids) ? _('Me') : $this->replaceDIDwithDisplay($m['from']),
-					'message' => \Emojione::toImage($m['body']),
-					'date' => strtotime($m['tx_rx_datetime'])
+					'message' => $body,
+					'date' => strtotime($m['tx_rx_datetime']),
+					'direction' => $m['direction']
 				);
 			}
 			$final = array_reverse($final);
@@ -163,6 +169,7 @@ class Sms extends Modules{
 			case 'delete':
 			case 'contacts':
 			case 'grid':
+			case 'media':
 				return true;
 			break;
 			default:
@@ -196,6 +203,27 @@ class Sms extends Modules{
 		return $out;
 	}
 
+	public function getMessageHtmlByID($id) {
+		$medias = $this->sms->getMediaByID($id);
+		if(empty($medias)) {
+			return '';
+		}
+		$html = '';
+		foreach($medias as $data) {
+			switch($data['type']) {
+				case "img":
+					$link = 'index.php?quietmode=1&module=sms&command=media&name='.$data['link'];
+					$html .= '<a href="'.$link.'" target="_blank"><img src="'.$link.'" style="width: 100%;"></a>';
+				break;
+				case "text":
+					$html .= $this->UCP->emoji->toImage($data['data']);
+				break;
+			}
+			$html .= "</br>";
+		}
+		return $html;
+	}
+
 	/**
 	 * The Handler for all ajax events releated to this class
 	 *
@@ -209,7 +237,15 @@ class Sms extends Modules{
 			case 'messages':
 				$search = !empty($_REQUEST['search']) ? $_REQUEST['search'] : '';
 				$t = $this->sms->getAllMessages($this->userID,$_REQUEST['from'],$_REQUEST['to'],$search);
-				return $t;
+				$final = array();
+				foreach($t as $m) {
+					$html = $this->getMessageHtmlByID($m['id']);
+					if(!empty($html)) {
+						$m['body'] = $html;
+					}
+					$final[] = $m;
+				}
+				return $final;
 			break;
 			case 'grid':
 				$sort = $_REQUEST['sort'];
@@ -225,7 +261,7 @@ class Sms extends Modules{
 				foreach($messages as $conversation) {
 					$msgs = array();
 					foreach($conversation['messages'] as $message) {
-						$message['body'] = \Emojione::toImage($message['body']);
+						$message['body'] = $this->UCP->emoji->toImage($message['body']);
 						$msgs[] = $message['body'];
 					}
 					reset($conversation['messages']);
@@ -264,6 +300,14 @@ class Sms extends Modules{
 			case 'history':
 				$messages = $this->getOldMessages($_POST['id'],$_POST['from'],$_POST['to']);
 				$return['status'] = true;
+				$final = array();
+				foreach($messages as $m) {
+					$html = $this->getMessageHtmlByID($m['id']);
+					if(!empty($html)) {
+						$m['body'] = $html;
+					}
+					$final[] = $m;
+				}
 				$return['messages'] = $messages;
 			break;
 			case 'dids':
@@ -299,6 +343,25 @@ class Sms extends Modules{
 			break;
 		}
 		return $return;
+	}
+
+	function ajaxCustomHandler() {
+		switch($_REQUEST['command']) {
+			case "media":
+				$data = $this->sms->getMediaByName($_REQUEST['name']);
+				if(!empty($data)) {
+					$finfo = new \finfo(FILEINFO_MIME);
+					header('Content-Type: '.$finfo->buffer($data));
+					header("Content-Length: " .strlen($data) );
+					echo $data;
+				}
+				return true;
+			break;
+			default:
+				return false;
+			break;
+		}
+		return false;
 	}
 
 	private function formatNumber($number) {
