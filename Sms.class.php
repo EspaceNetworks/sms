@@ -426,6 +426,19 @@ class Sms implements \BMO {
 	}
 
 	/**
+	 * Mark all Messages Read sent to a specific did form did
+	 * @param {int} $msgId The message ID
+	 */
+	public function markAllMessagesReadByDIDs($from, $to) {
+		$sql = "UPDATE sms_messages SET `read` = 1 WHERE `read` = 0 AND ((`from` = :from AND `to` = :to) OR (`from` = :to AND `to` = :from))";
+		$sth = $this->db->prepare($sql);
+		$sth->execute(array(
+			"from" => $from,
+			"to" => $to
+		));
+	}
+
+	/**
 	 * Mark a message delivered
 	 * @param {int} $msgId The message ID
 	 */

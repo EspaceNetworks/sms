@@ -4,13 +4,46 @@ namespace FreePBX\modules\Sms;
 //	Copyright 2013 Schmooze Com Inc.
 //
 abstract class AdaptorBase {
-
+	protected $supportsMedia = false;
 	public function __construct() {
 		$this->db = \FreePBX::Database();
 		if(!class_exists('Emojione\Emojione')) {
 			include __DIR__."/Emojione.class.php";
 		}
 		$this->emoji = new \Emojione\Client(new \Emojione\Ruleset());
+	}
+
+	/**
+	 * Insert message media into the database
+	 * @param  integer $to    The DID the message was sent to
+	 * @param  integer $from  The DID the message was from
+	 * @param  string $cnam  The CNAME of the message
+	 * @param  string $message The message body
+	 * @param  array  $files Array of file names to process
+	 * @param  integer $time    Unix Timestamp when the message was set (Use null for NOW())
+	 * @param  string $adaptor The adaptor used to send the message
+	 * @param  string $emid    External message id if there is one
+	 * @return integer        The inserted message ID
+	 */
+	public function sendMedia($to,$from,$cnam,$message=null,$files=array(),$time=null,$adaptor=null,$emid=null) {
+		if(!$this->supportsMedia) {
+			return false;
+		}
+		$id = self::sendMessage($to,$from,$cnam,$message,$time,$adaptor,$emid);
+		foreach($files as $file){
+			if(file_exists($file)) {
+				$data = file_get_contents($file);
+				try {
+					$sql = "INSERT INTO sms_media (`mid`, `name`, `raw`) VALUES (?, ?, ?)";
+					$sth = $this->db->prepare($sql);
+					$sth->execute(array($id, basename($file), $data));
+				} catch (\Exception $e) {
+					throw new Exception('Unable to Insert Message Media into DB');
+				}
+				unlink($file);
+			}
+		}
+		return $id;
 	}
 
 	/**
@@ -21,7 +54,7 @@ abstract class AdaptorBase {
 	 * @param  string $message The message
 	 * @param  integer $time    Unix Timestamp when the message was set (Use null for NOW())
 	 * @param  string $adaptor The adaptor used to send the message
-	 * @param  string $emid    External message id is there is one
+	 * @param  string $emid    External message id if there is one
 	 * @return integer          The ID of the row that was inserted
 	 */
 	public function sendMessage($to,$from,$cnam,$message,$time=null,$adaptor=null,$emid=null) {
@@ -30,8 +63,10 @@ abstract class AdaptorBase {
 			$sth = $this->db->prepare($sql);
 			$message = $this->emoji->toShort($message);
 			$time = !empty($time) ? $time : time();
+			$message = !is_null($message) ? $message : "";
 			$sth->execute(array($from, $to, $cnam, $time, $message, $adaptor, $emid));
-			return $this->db->lastInsertId();
+			$id = $this->db->lastInsertId();
+			return $id;
 		} catch (\Exception $e) {
 			throw new Exception('Unable to Insert Message into DB');
 		}

@@ -5,6 +5,7 @@ var SmsC = UCPMC.extend({
 		this.lastchecked = Math.round(new Date().getTime() / 1000);
 		this.dids = [];
 		this.icon = "fa fa-comments-o";
+		this.supportedFiles = "png|jpg";
 		//Logged In
 		var Sms = this;
 		$(document).bind("logIn", function( event ) {
@@ -80,8 +81,9 @@ var SmsC = UCPMC.extend({
 				object.on("click", function() {
 					object.find(".title-bar").css("background-color", "");
 				});
-				var from = $(".message-box[data-id=\"" + windowId + "\"]").data("from"),
-				to = $(".message-box[data-id=\"" + windowId + "\"]").data("to");
+				var from = object.data("from"),
+				to = object.data("to"),
+				cwindow = $(".message-box[data-id=\"" + windowId + "\"] .window");
 				object.find("textarea").keyup(function(event) {
 					if (event.keyCode == 13) {
 						var message = $(this).val();
@@ -101,6 +103,62 @@ var SmsC = UCPMC.extend({
 							$(".message-box[data-id=\"" + windowId + "\"] .chat .history").prepend(html);
 						});
 					}
+				});
+				object.find(".window").prepend("<input type='file' class='hidden'>");
+				$(".message-box[data-id=\"" + windowId + "\"] .window input[type=file]").fileupload({
+					url: "?quietmode=1&module=sms&command=upload&from="+from+"&to="+to,
+					dropZone: cwindow,
+					dataType: "json",
+					add: function(e, data) {
+						var sup = "\.("+Sms.supportedFiles+")$",
+								patt = new RegExp(sup),
+								submit = true;
+						$.each(data.files, function(k, v) {
+							if(!patt.test(v.name)) {
+								submit = false;
+								alert(_("Unsupported file type"));
+								return false;
+							}
+							if(v.size > 1500000) {
+								submit = false;
+								alert(_("File size is too large. Max: 1.5mb"));
+								return false;
+							}
+						});
+						if(submit) {
+							object.find(".response-status").html("");
+							object.find(".response-status").prepend('<div class="progress"><div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"><span class="sr-only">0% Complete</span></div></div>');
+							data.submit();
+						}
+					},
+					done: function(e, data) {
+						console.log(data);
+						if (data.result.status) {
+							UCP.addChatMessage(windowId, from, data.result.id, data.result.html, false, true, 'out');
+							if($('#sms-grid').length) {
+								$('#sms-grid').bootstrapTable('refresh', {silent: true});
+							}
+						} else {
+							object.find(".response-status").html(data.result.message);
+						}
+						object.find(".progress").remove();
+					},
+					progressall: function(e, data) {
+						var progress = parseInt(data.loaded / data.total * 100, 10);
+						object.find(".progress-bar").css("width", progress + "%");
+					},
+					drop: function(e, data) {
+						cwindow.removeClass("hover");
+					}
+				});
+				cwindow.on("dragover", function(event) {
+					if (event.preventDefault) {
+						event.preventDefault(); // Necessary. Allows us to drop.
+					}
+					$(this).addClass("hover");
+				});
+				cwindow.on("dragleave", function(event) {
+					$(this).removeClass("hover");
 				});
 			}
 		});
@@ -195,11 +253,11 @@ var SmsC = UCPMC.extend({
 				$.each(messages, function(index, v) {
 					if (!$(".message-box[data-id=\"" + windowid + "\"] .message[data-id=\"" + v.id + "\"]").length) {
 						var Notification = new Notify(sprintf(_("New Message from %s"), Sms.replaceContact(v.from)), {
-							body: emojione.unifyUnicode(v.body),
+							body: v.html ? _("New Message") : emojione.unifyUnicode(v.body),
 							icon: "modules/Sms/assets/images/comment.png",
 							timeout: 3
 						});
-						UCP.addChat("Sms", windowid, Sms.icon, v.did, v.recp, Sms.replaceContact(v.cnam), v.id, v.body);
+						UCP.addChat("Sms", windowid, Sms.icon, v.did, v.recp, Sms.replaceContact(v.cnam), v.id, v.body, null, true, 'in');
 						delivered.push(v.id);
 						if (UCP.notify) {
 							Notification.show();
@@ -287,14 +345,13 @@ var SmsC = UCPMC.extend({
 		$(".message-box[data-id='" + windowId + "'] textarea").prop("disabled", true);
 		$.post( "index.php?quietmode=1&module=sms&command=send", { from: from, to: to, message: message }, function( data ) {
 			if (data.status) {
-				UCP.addChatMessage(windowId, from, data.id, message, false);
+				UCP.addChatMessage(windowId, from, data.id, message, false, false, 'out');
 				$(".message-box[data-id='" + windowId + "'] textarea").val("");
 				if($('#sms-grid').length) {
 					$('#sms-grid').bootstrapTable('refresh', {silent: true});
 				}
 			} else {
-				//TODO: Error message about sending here!
-				//UCP.addChatMessage(windowId, _("System"), data.id, _("There was an error sending this message: "), false);
+				$(".message-box[data-id='" + windowId + "'] .response-status").html(data.message);
 			}
 			$(".message-box[data-id='" + windowId + "'] textarea").prop("disabled", false);
 			$(".message-box[data-id='" + windowId + "'] textarea").focus();

@@ -63,8 +63,10 @@ class Sms extends Modules{
 				}
 				$wid = $from.$to;
 				$messageb['cnam'] = !empty($messageb['cnam']) ? $messageb['cnam'] : $messageb['from'];
+				$html = $this->getMessageHtmlByID($mid);
+				$messageb['body'] = !empty($html) ? $html : htmlentities($messageb['body']);
+				$messageb['html'] = !empty($html) ? true : false;
 				$messages[$wid][$mid] = $messageb;
-
 			}
 		}
 
@@ -88,6 +90,9 @@ class Sms extends Modules{
 					}
 					$messageb['cnam'] = !empty($messageb['cnam']) ? $messageb['cnam'] : $messageb['from'];
 					if(!isset($messages[$wid][$mid])) {
+						$html = $this->getMessageHtmlByID($mid);
+						$messageb['body'] = !empty($html) ? $html : htmlentities($messageb['body']);
+						$messageb['html'] = !empty($html) ? true : false;
 						$messages[$wid][$mid] = $messageb;
 					}
 				}
@@ -160,6 +165,7 @@ class Sms extends Modules{
 	 */
 	function ajaxRequest($command, $settings) {
 		switch($command) {
+			case 'upload':
 			case 'messages':
 			case 'history':
 			case 'delivered':
@@ -216,6 +222,7 @@ class Sms extends Modules{
 					$html .= '<a href="'.$link.'" target="_blank"><img src="'.$link.'" style="width: 100%;"></a>';
 				break;
 				case "text":
+					$data['data'] = htmlentities($data['data']);
 					$html .= $this->UCP->emoji->toImage($data['data']);
 				break;
 			}
@@ -234,8 +241,54 @@ class Sms extends Modules{
 	function ajaxHandler() {
 		$return = array("status" => false, "message" => "");
 		switch($_REQUEST['command']) {
+			case 'upload':
+				foreach ($_FILES["files"]["error"] as $key => $error) {
+					if ($error == UPLOAD_ERR_OK) {
+						$tmp_path = \FreePBX::Config()->get("ASTSPOOLDIR") . "/tmp";
+						if(!file_exists($tmp_path)) {
+							mkdir($tmp_path,0777,true);
+						}
+
+						$extension = pathinfo($_FILES["files"]["name"][$key], PATHINFO_EXTENSION);
+						$supported = $this->UCP->FreePBX->Media->getSupportedFormats();
+						if(true) {
+							$tmp_name = $_FILES["files"]["tmp_name"][$key];
+							$name = \Media\Media::cleanFileName($_FILES["files"]["name"][$key]);
+							$fid = uniqid('sms');
+							move_uploaded_file($tmp_name, $tmp_path."/".$fid."-".$name.".".$extension );
+							$size = filesize($tmp_path."/".$fid."-".$name.".".$extension);
+							if($size > 1500000) {
+								$return['message'] = "<span class='text-danger'>"._('File Size is too large. Max: 1.5mb')."</span>";
+								break;
+							}
+							$files = array($tmp_path."/".$fid."-".$name.".".$extension);
+							$did = $_REQUEST['from'];
+							$adaptor = $this->sms->getAdaptor($did);
+							if(is_object($adaptor)) {
+								$name = !empty($this->user['fname']) ? $this->user['fname'] : $this->user['username'];
+								$o = $adaptor->sendMedia($_REQUEST['to'],$this->formatNumber($did),$name,"",$files);
+								if($o['status']) {
+									$return['status'] = true;
+									$return['id'] = $o['id'];
+									$return['html'] = $this->getMessageHtmlByID($o['id']);
+								} else {
+									$return['message'] = "<span class='text-danger'>".$o['message']."</span>";
+									break;
+								}
+							} else {
+								$return['message'] = "<span class='text-danger'>"._("Adaptor not loaded")."</span>";
+								break;
+							}
+						} else {
+							$return = array("status" => false, "message" => "<span class='text-danger'>"._("Unsupported file format")."</span>");
+							break;
+						}
+					}
+				}
+			break;
 			case 'messages':
 				$search = !empty($_REQUEST['search']) ? $_REQUEST['search'] : '';
+				$this->sms->markAllMessagesReadByDIDs($_REQUEST['from'],$_REQUEST['to']);
 				$t = $this->sms->getAllMessages($this->userID,$_REQUEST['from'],$_REQUEST['to'],$search);
 				$final = array();
 				foreach($t as $m) {
@@ -332,10 +385,10 @@ class Sms extends Modules{
 						$return['status'] = true;
 						$return['id'] = $o['id'];
 					} else {
-						$return['message'] = _('Message could not be delivered');
+						$return['message'] = "<span class='text-danger'>".$o['message']."</span>";
 					}
 				} else {
-					$return['message'] = _("Adaptor not loaded");
+					$return['message'] = "<span class='text-danger'>"._("Adaptor not loaded")."</span>";
 				}
 			break;
 			default:
@@ -379,10 +432,11 @@ class Sms extends Modules{
 		if(empty($this->dids)) {
 			return array();
 		}
+		$unread = $this->sms->getUnreadCount($this->userID);
 		$menu = array(
 			"rawname" => "sms",
 			"name" => "Sms",
-			"badge" => true
+			"badge" => $unread
 		);
 		return $menu;
 	}
