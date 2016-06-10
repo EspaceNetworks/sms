@@ -1,0 +1,103 @@
+# This file is part of FreePBX.
+#
+# For licensing information, please see the file named LICENSE located in the module directory
+#
+# FreePBX language template for sms
+# Copyright (C) 2008-2016 Sangoma, Inc.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-01-11 18:39-0800\n"
+"PO-Revision-Date: 2016-05-05 19:09+0200\n"
+"Last-Translator: Media <mousavi.media@gmail.com>\n"
+"Language-Team: Persian (Iran) "
+"<http://weblate.freepbx.org/projects/freepbx/sms/fa_IR/>\n"
+"Language: fa_IR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 2.4\n"
+
+msgid "Adaptor not loaded"
+msgstr "آداپتور لود نشده"
+
+msgid "Are you sure you wish to delete this conversation?"
+msgstr "آیا از حذف این مکالمه مطمئنید؟"
+
+msgid "Body"
+msgstr "بدنه"
+
+msgid "Close"
+msgstr "بستن"
+
+msgid "Connectivity"
+msgstr "اتصال"
+
+msgid "Controls"
+msgstr "کنترل ها"
+
+#, php-format
+msgid "Conversation Detail with %s"
+msgstr "جزئیات مکالمه با %s"
+
+msgid "DID"
+msgstr "داخلی مستقیم (DID)"
+
+msgid "Direction"
+msgstr "جهت"
+
+msgid "Invalid Number"
+msgstr "شماره نادرست"
+
+msgid "Last Message Date"
+msgstr "تاریخ آخرین پیام"
+
+msgid "Me"
+msgstr "من"
+
+msgid "Message could not be delivered"
+msgstr "امکان تحویل پیام وجود ندارد"
+
+#, perl-format
+msgid "New Message from %s"
+msgstr "پیام جدید از %s"
+
+msgid "New SMS"
+msgstr "پیامک جدید"
+
+msgid "Received"
+msgstr "دریافت شد"
+
+msgid "SMS"
+msgstr "پیامک"
+
+msgid "Send Message"
+msgstr "ارسال پیام"
+
+msgid "Send SMS"
+msgstr "ارسال پیامک"
+
+msgid "Sent"
+msgstr "ارسال"
+
+msgid "System"
+msgstr "سیستم"
+
+msgid "There was an error sending this message: "
+msgstr "خطایی در هنگام ارسال این پیام به وجود آمد: "
+
+msgid ""
+"This module is used to configure and manage SMS chat interfaces inside of "
+"the new UCP."
+msgstr ""
+"از این ماژول برای تنظیم و مدیریت رابط گفتگوی پیامکی در داخل پنل کنترل کاربری "
+"استفاده میشود."
+
+msgid "Time"
+msgstr "ساعت"
+
+msgid "To"
+msgstr "به"
