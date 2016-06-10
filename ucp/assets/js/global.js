@@ -104,8 +104,8 @@ var SmsC = UCPMC.extend({
 						});
 					}
 				});
-				object.find(".window").prepend("<input type='file' class='hidden'>");
-				$(".message-box[data-id=\"" + windowId + "\"] .window input[type=file]").fileupload({
+				object.find(".window").prepend("<input id='file-" + windowId + "' type='file' class='hidden'><label for='file-" + windowId + "'><i class='fa fa-upload'></i></label>");
+				$("#file-" + windowId).fileupload({
 					url: "?quietmode=1&module=sms&command=upload&from="+from+"&to="+to,
 					dropZone: cwindow,
 					dataType: "json",
@@ -345,6 +345,7 @@ var SmsC = UCPMC.extend({
 		$(".message-box[data-id='" + windowId + "'] textarea").prop("disabled", true);
 		$.post( "index.php?quietmode=1&module=sms&command=send", { from: from, to: to, message: message }, function( data ) {
 			if (data.status) {
+				$(".message-box[data-id='" + windowId + "'] .response-status").html("");
 				UCP.addChatMessage(windowId, from, data.id, message, false, false, 'out');
 				$(".message-box[data-id='" + windowId + "'] textarea").val("");
 				if($('#sms-grid').length) {

@@ -91,7 +91,22 @@
 }
 
 #messages-container {
-	.message-box {
+	.message-box[data-module=Sms] {
+		.window {
+			.response {
+				textarea {
+					width: 80%;
+				}
+			}
+			label {
+				position: absolute;
+				bottom: 6px;
+				right: 8px;
+				cursor: pointer;
+				background-color: whitesmoke;
+				padding: 3px;
+			}
+		}
 		.window.hover {
 			opacity: 0.5;
 		}
