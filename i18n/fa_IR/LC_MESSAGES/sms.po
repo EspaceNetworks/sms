@@ -9,15 +9,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-01-11 18:39-0800\n"
+"POT-Creation-Date: 2016-06-09 23:01-0700\n"
 "PO-Revision-Date: 2016-05-05 19:09+0200\n"
 "Last-Translator: Media <mousavi.media@gmail.com>\n"
-"Language-Team: Persian (Iran) "
-"<http://weblate.freepbx.org/projects/freepbx/sms/fa_IR/>\n"
-"Language: fa_IR\n"
+"Language-Team: Persian (Iran) <http://weblate.freepbx.org/projects/freepbx/"
+"sms/fa_IR/>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: fa_IR\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 2.4\n"
 
@@ -49,6 +49,12 @@ msgstr "داخلی مستقیم (DID)"
 msgid "Direction"
 msgstr "جهت"
 
+msgid "File Size is too large. Max: 1.5mb"
+msgstr ""
+
+msgid "File size is too large. Max: 1.5mb"
+msgstr ""
+
 msgid "Invalid Number"
 msgstr "شماره نادرست"
 
@@ -58,8 +64,8 @@ msgstr "تاریخ آخرین پیام"
 msgid "Me"
 msgstr "من"
 
-msgid "Message could not be delivered"
-msgstr "امکان تحویل پیام وجود ندارد"
+msgid "New Message"
+msgstr ""
 
 #, perl-format
 msgid "New Message from %s"
@@ -83,12 +89,6 @@ msgstr "ارسال پیامک"
 msgid "Sent"
 msgstr "ارسال"
 
-msgid "System"
-msgstr "سیستم"
-
-msgid "There was an error sending this message: "
-msgstr "خطایی در هنگام ارسال این پیام به وجود آمد: "
-
 msgid ""
 "This module is used to configure and manage SMS chat interfaces inside of "
 "the new UCP."
@@ -101,3 +101,18 @@ msgstr "ساعت"
 
 msgid "To"
 msgstr "به"
+
+msgid "Unsupported file format"
+msgstr ""
+
+msgid "Unsupported file type"
+msgstr ""
+
+#~ msgid "Message could not be delivered"
+#~ msgstr "امکان تحویل پیام وجود ندارد"
+
+#~ msgid "System"
+#~ msgstr "سیستم"
+
+#~ msgid "There was an error sending this message: "
+#~ msgstr "خطایی در هنگام ارسال این پیام به وجود آمد: "

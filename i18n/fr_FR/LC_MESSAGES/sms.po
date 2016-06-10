@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-01-11 18:39-0800\n"
+"POT-Creation-Date: 2016-06-09 23:01-0700\n"
 "PO-Revision-Date: 2016-01-24 06:32+0200\n"
 "Last-Translator: Nicolas <forums@riendeau.org>\n"
 "Language-Team: French <http://weblate.freepbx.org/projects/freepbx/sms/fr_FR/"
@@ -49,6 +49,12 @@ msgstr "DID"
 msgid "Direction"
 msgstr "Direction"
 
+msgid "File Size is too large. Max: 1.5mb"
+msgstr ""
+
+msgid "File size is too large. Max: 1.5mb"
+msgstr ""
+
 msgid "Invalid Number"
 msgstr "Numéro invalide"
 
@@ -58,8 +64,8 @@ msgstr "Date du dernier message"
 msgid "Me"
 msgstr "Moi"
 
-msgid "Message could not be delivered"
-msgstr "Le message n'a pu être acheminé"
+msgid "New Message"
+msgstr ""
 
 #, perl-format
 msgid "New Message from %s"
@@ -83,12 +89,6 @@ msgstr "Envoyer SMS"
 msgid "Sent"
 msgstr "Envoyé"
 
-msgid "System"
-msgstr "Système"
-
-msgid "There was an error sending this message: "
-msgstr "Il y a eu une erreur lors de l'envoi de ce message: "
-
 msgid ""
 "This module is used to configure and manage SMS chat interfaces inside of "
 "the new UCP."
@@ -101,3 +101,18 @@ msgstr "Heure"
 
 msgid "To"
 msgstr "À"
+
+msgid "Unsupported file format"
+msgstr ""
+
+msgid "Unsupported file type"
+msgstr ""
+
+#~ msgid "Message could not be delivered"
+#~ msgstr "Le message n'a pu être acheminé"
+
+#~ msgid "System"
+#~ msgstr "Système"
+
+#~ msgid "There was an error sending this message: "
+#~ msgstr "Il y a eu une erreur lors de l'envoi de ce message: "

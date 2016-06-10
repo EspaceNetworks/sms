@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-01-11 18:39-0800\n"
+"POT-Creation-Date: 2016-06-09 23:01-0700\n"
 "PO-Revision-Date: 2015-04-12 22:02+0200\n"
 "Last-Translator: Ernesto <ecasas@sangoma.com>\n"
 "Language-Team: Spanish <http://weblate.freepbx.org/projects/freepbx/sms/"
@@ -49,6 +49,12 @@ msgstr "\"DID\""
 msgid "Direction"
 msgstr ""
 
+msgid "File Size is too large. Max: 1.5mb"
+msgstr ""
+
+msgid "File size is too large. Max: 1.5mb"
+msgstr ""
+
 msgid "Invalid Number"
 msgstr "Numero Invalido"
 
@@ -58,7 +64,7 @@ msgstr "Fecha Ultimo Mensaje"
 msgid "Me"
 msgstr "Yo"
 
-msgid "Message could not be delivered"
+msgid "New Message"
 msgstr ""
 
 #, perl-format
@@ -83,12 +89,6 @@ msgstr "Enviar SMS"
 msgid "Sent"
 msgstr ""
 
-msgid "System"
-msgstr "Sistema"
-
-msgid "There was an error sending this message: "
-msgstr "Hubo un error enviando el mensaje: "
-
 msgid ""
 "This module is used to configure and manage SMS chat interfaces inside of "
 "the new UCP."
@@ -101,6 +101,18 @@ msgstr ""
 
 msgid "To"
 msgstr "A"
+
+msgid "Unsupported file format"
+msgstr ""
+
+msgid "Unsupported file type"
+msgstr ""
+
+#~ msgid "System"
+#~ msgstr "Sistema"
+
+#~ msgid "There was an error sending this message: "
+#~ msgstr "Hubo un error enviando el mensaje: "
 
 #~ msgid "Are you Sure you wish to delete this chat history?"
 #~ msgstr "Esta seguro desea eliminar esta historia de chat?"
