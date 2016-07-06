@@ -56,15 +56,7 @@ $cols = array(
 		"notnull" => false,
 	),
 );
-$indexes = array(
-	"TEXT" => array(
-		"type" => "fulltext",
-		"cols" => array(
-			"body"
-		)
-	)
-);
-$s = $table->modify($cols,$indexes);
+$s = $table->modify($cols);
 unset($table);
 
 out('Creating SMS Routing Table');
