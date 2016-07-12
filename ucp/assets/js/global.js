@@ -1,11 +1,9 @@
 var SmsC = UCPMC.extend({
 	init: function(UCP) {
-		this.packery = false;
-		this.doit = null;
 		this.lastchecked = Math.round(new Date().getTime() / 1000);
 		this.dids = [];
 		this.icon = "fa fa-comments-o";
-		this.supportedFiles = "png|jpg";
+		this.supportedFiles = "png|jpg|jpeg|gif|tiff|pdf|vcf|mp3|wav|ogg|mov|avi|mp4|m4a|ical|ics";
 		//Logged In
 		var Sms = this;
 		$(document).bind("logIn", function( event ) {
@@ -132,7 +130,6 @@ var SmsC = UCPMC.extend({
 						}
 					},
 					done: function(e, data) {
-						console.log(data);
 						if (data.result.status) {
 							UCP.addChatMessage(windowId, from, data.result.id, data.result.html, false, true, 'out');
 							if($('#sms-grid').length) {
@@ -328,7 +325,7 @@ var SmsC = UCPMC.extend({
 				to = ($("#SMSto").val() !== null) ? $("#SMSto").val()[0] : "",
 				from = $("#SMSfrom").val(),
 			pattern = new RegExp(/^\d*$/);
-		if (to !== "" && to.length <= 11 && to.length >= 10 && pattern.test(to)) {
+		if (to !== "" && pattern.test(to)) {
 			to = (to.length === 10) ? "1" + to : to;
 			UCP.addChat("Sms", from + to, Sms.icon, from, to);
 			UCP.closeDialog();

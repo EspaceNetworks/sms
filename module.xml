@@ -6,11 +6,12 @@
   <licenselink>http://literature.schmoozecom.com/EUA/FreePBXCommercialModule-EndUserAgreement.txt</licenselink>
   <repo>standard</repo>
   <category>Connectivity</category>
-  <version>13.0.8</version>
+  <version>13.0.9</version>
   <description>
     This module is used to configure and manage SMS chat interfaces inside of the new UCP.
   </description>
   <changelog>
+		*13.0.9* Support more file formats during upload
 		*13.0.8* Remove full text searching on the database
     *13.0.7* Support for MMS Services
 		*13.0.6* Remove en_US Translations

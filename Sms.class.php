@@ -89,6 +89,9 @@ class Sms implements \BMO {
 					case "tiff":
 						$type = 'img';
 					break;
+					default:
+						$type = 'bin';
+					break;
 				}
 				$final[] = array(
 					'type' => $type,

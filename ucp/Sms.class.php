@@ -225,6 +225,10 @@ class Sms extends Modules{
 					$data['data'] = htmlentities($data['data']);
 					$html .= $this->UCP->emoji->toImage($data['data']);
 				break;
+				default:
+					$link = 'index.php?quietmode=1&module=sms&command=media&name='.$data['link'];
+					$html .= '<a href="'.$link.'" target="_blank"><i class="fa fa-file" aria-hidden="true"></i> '.$data['link'].'</a>';
+				break;
 			}
 			$html .= "</br>";
 		}
